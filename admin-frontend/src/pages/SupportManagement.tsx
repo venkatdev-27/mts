@@ -75,7 +75,7 @@ const SupportManagement: React.FC = () => {
                         <div className="w-8"></div> {/* Spacer for alignment */}
                     </div>
 
-                                  </div>
+                </div>
 
                 {/* Messages List Container */}
                 <div className="flex-1 overflow-y-auto custom-scrollbar">
@@ -212,12 +212,11 @@ const SupportManagement: React.FC = () => {
                             </div>
 
                             <div className="mt-8 flex justify-end gap-3">
-                                <button className="px-6 py-3 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all font-medium">
+                                <button
+                                    onClick={() => setSelectedMessage(null)}
+                                    className="px-6 py-3 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all font-medium"
+                                >
                                     Close
-                                </button>
-                                <button className="px-6 py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/25 transition-all transform hover:-translate-y-1 font-bold flex items-center gap-2">
-                                    <Mail className="w-4 h-4" />
-                                    Reply via Email
                                 </button>
                             </div>
                         </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 import { contactAPI } from '../services/api';
 
 const Contact: React.FC = () => {
@@ -21,11 +22,17 @@ const Contact: React.FC = () => {
     try {
       await contactAPI.sendMessage(formData);
       setSubmitStatus('success');
-      alert('Thank you for your message! We will get back to you soon.');
+      toast.success('Thank you for your message! \nWe will get back to you soon.', {
+        duration: 2000,
+        position: 'top-center'
+      });
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch (error) {
       setSubmitStatus('error');
-      alert('Sorry, there was an error sending your message. Please try again.');
+      toast.error('Sorry, there was an error sending your message. \nPlease try again.', {
+        duration: 2000,
+        position: 'top-center'
+      });
       console.error('Error sending message:', error);
     } finally {
       setIsLoading(false);
