@@ -15,4 +15,4 @@ RUN npm ci --only=production
 COPY --from=build /app .
 
 EXPOSE 5000
-CMD ["node", "dist/server.js"]
+CMD ["node", "server.js"]
