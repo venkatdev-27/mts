@@ -1,85 +1,90 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Stat } from '../types';
+import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
+import { Users, Briefcase, Star, Lightbulb } from 'lucide-react';
 
-const stats: Stat[] = [
-  { label: 'Projects Delivered', value: 500, suffix: '+' },
-  { label: 'Happy Students', value: 300, suffix: '+' },
-  { label: 'Latest Technologies', value: 50, suffix: '+' },
-  { label: 'Years Experience', value: 5, suffix: '+' },
+const stats = [
+  {
+    id: 1,
+    label: "Members Joined",
+    value: 2000,
+    suffix: "+",
+    icon: Users,
+    color: "text-blue-600",
+    bg: "bg-blue-100"
+  },
+  {
+    id: 2,
+    label: "Placements Given",
+    value: 700,
+    suffix: "+",
+    icon: Briefcase,
+    color: "text-green-600",
+    bg: "bg-green-100"
+  },
+  {
+    id: 3,
+    label: "Average Rating",
+    value: 4.8,
+    suffix: "/5",
+    icon: Star,
+    color: "text-yellow-500",
+    bg: "bg-yellow-100",
+    isDecimal: true
+  },
+  {
+    id: 4,
+    label: "Hiring Partners",
+    value: 120,
+    suffix: "+",
+    icon: Lightbulb,
+    color: "text-purple-600",
+    bg: "bg-purple-100"
+  }
 ];
 
-const CountUp: React.FC<{ end: number; duration: number; suffix: string }> = ({ end, duration, suffix }) => {
-  const [count, setCount] = useState(0);
-  const countRef = useRef(0);
-  const startTimeRef = useRef<number | null>(null);
-  const [hasStarted, setHasStarted] = useState(false);
-  const elementRef = useRef<HTMLSpanElement>(null);
+const Counter = ({ value, isDecimal = false }) => {
+  const ref = useRef(null);
+  const motionValue = useMotionValue(0);
+  const springValue = useSpring(motionValue, { duration: 2500, bounce: 0 }); // Smooth counting
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !hasStarted) {
-          setHasStarted(true);
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
+    if (isInView) {
+      motionValue.set(value);
     }
+  }, [isInView, value, motionValue]);
 
-    return () => observer.disconnect();
-  }, [hasStarted]);
+  const [displayValue, setDisplayValue] = useState(0);
 
   useEffect(() => {
-    if (!hasStarted) return;
-
-    const animate = (timestamp: number) => {
-      if (!startTimeRef.current) startTimeRef.current = timestamp;
-      const progress = timestamp - startTimeRef.current;
-      const percentage = Math.min(progress / duration, 1);
-      
-      // Easing function for smooth animation
-      const easeOutQuart = (x: number): number => 1 - Math.pow(1 - x, 4);
-      
-      const currentCount = Math.floor(easeOutQuart(percentage) * end);
-      
-      setCount(currentCount);
-
-      if (progress < duration) {
-        requestAnimationFrame(animate);
+    return springValue.on("change", (latest) => {
+      if (isDecimal) {
+        setDisplayValue(Number(latest.toFixed(1)));
       } else {
-        setCount(end);
+        setDisplayValue(Math.floor(latest));
       }
-    };
+    });
+  }, [springValue, isDecimal]);
 
-    const request = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(request);
-  }, [end, duration, hasStarted]);
-
-  return (
-    <span ref={elementRef} className="text-4xl md:text-5xl font-extrabold text-primary-600 block mb-2">
-      {count}{suffix}
-    </span>
-  );
+  return <span ref={ref}>{displayValue}</span>;
 };
 
-const StatsCounter: React.FC = () => {
+
+export default function StatsCounter() {
   return (
-    <div className="bg-primary-50 py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          {stats.map((stat) => (
-            <div key={stat.label} className="p-4 rounded-lg">
-              <CountUp end={stat.value} duration={2000} suffix={stat.suffix} />
-              <p className="text-lg font-medium text-gray-600">{stat.label}</p>
-            </div>
-          ))}
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
+      {stats.map((stat) => (
+        <div key={stat.id} className="bg-slate-50 border border-slate-100 rounded-2xl p-6 text-center hover:shadow-lg hover:border-slate-200 transition-all duration-300 group">
+          <div className={`mx-auto w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform duration-300`}>
+            <stat.icon className="w-6 h-6" />
+          </div>
+          <h3 className="text-3xl font-extrabold text-slate-900 mb-1">
+            <Counter value={stat.value} isDecimal={stat.isDecimal} />
+            <span className="text-2xl">{stat.suffix}</span>
+          </h3>
+          <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">{stat.label}</p>
         </div>
-      </div>
+      ))}
     </div>
   );
-};
-
-export default StatsCounter;
+}

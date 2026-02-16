@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Code2, ChevronRight } from 'lucide-react';
+import { Menu, X, ChevronRight } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,9 +9,10 @@ const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Services', path: '/services' },
-    { name: 'Projects', path: '/projects' },
     { name: 'About Us', path: '/about' },
+    { name: 'Services', path: '/services' },
+    { name: 'Courses', path: '/courses' },
+    { name: 'Projects', path: '/projects' },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -27,21 +28,17 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg py-2' : 'bg-white py-4 shadow-sm'}`}>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg py-2' : 'bg-white py-2 shadow-sm'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center gap-2 group" onClick={() => setIsOpen(false)}>
-              <div className="bg-gradient-to-br from-primary-600 to-primary-700 p-2.5 rounded-xl shadow-lg group-hover:shadow-primary-500/30 transition-all duration-300">
-                <Code2 className="h-6 w-6 text-white" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-xl tracking-tight text-slate-900 leading-none">
-                  Maruthi<span className="text-primary-600">Tech</span>
-                </span>
-                <span className="text-[10px] text-slate-500 font-medium tracking-wider uppercase">Solutions</span>
-              </div>
+            <Link to="/" className="flex-shrink-0 flex items-center" onClick={() => setIsOpen(false)}>
+              <img
+                src="/models/logo.png"
+                alt="Maruthi Tech Solutions"
+                className="h-14 w-auto sm:h-16 md:h-[4.25rem] object-contain"
+              />
             </Link>
           </div>
 
@@ -52,8 +49,8 @@ const Navbar: React.FC = () => {
                 key={link.name}
                 to={link.path}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive(link.path)
-                    ? 'text-primary-700 bg-primary-50'
-                    : 'text-slate-600 hover:text-primary-600 hover:bg-slate-50'
+                  ? 'text-primary-700 bg-primary-50'
+                  : 'text-slate-600 hover:text-primary-600 hover:bg-slate-50'
                   }`}
               >
                 {link.name}
@@ -61,7 +58,7 @@ const Navbar: React.FC = () => {
             ))}
             <div className="pl-4 ml-4 border-l border-slate-200">
               <Link
-                to="/contact"
+                to="/register"
                 className="inline-flex items-center px-5 py-2.5 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg shadow-md shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-600/30 hover:-translate-y-0.5 transition-all duration-300"
               >
                 Get Started
@@ -83,7 +80,7 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div className={`md:hidden fixed inset-x-0 top-[72px] bg-white border-b border-slate-100 shadow-xl transition-all duration-300 origin-top transform ${isOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0 h-0'} overflow-hidden`}>
+      <div className={`md:hidden absolute top-full left-0 w-full bg-white border-b border-slate-100 shadow-xl transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-2 invisible'}`}>
         <div className="px-4 pt-2 pb-6 flex flex-col h-full bg-white">
           <div className="space-y-1 mb-6">
             {navLinks.map((link) => (
@@ -92,8 +89,8 @@ const Navbar: React.FC = () => {
                 to={link.path}
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-medium transition-all duration-200 ${isActive(link.path)
-                    ? 'text-primary-700 bg-primary-50 border border-primary-100'
-                    : 'text-slate-600 hover:text-primary-600 hover:bg-slate-50'
+                  ? 'text-primary-700 bg-primary-50 border border-primary-100'
+                  : 'text-slate-600 hover:text-primary-600 hover:bg-slate-50'
                   }`}
               >
                 {link.name}
@@ -104,7 +101,7 @@ const Navbar: React.FC = () => {
 
           <div className="mt-auto px-1 pb-2">
             <Link
-              to="/contact"
+              to="/register"
               onClick={() => setIsOpen(false)}
               className="flex items-center justify-center w-full px-4 py-4 text-base font-bold text-white bg-primary-600 hover:bg-primary-700 rounded-xl shadow-lg shadow-primary-500/30 transition-all active:scale-[0.98]"
             >

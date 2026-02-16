@@ -3,26 +3,26 @@ import { Service } from '../types';
 export const services: Service[] = [
   {
     id: '1',
-    title: 'Project Guidance',
-    description: 'End-to-end mentorship for academic projects from ideation to execution.',
+    title: 'Course Roadmap Training',
+    description: 'Structured training aligned to each course level with mentor-led sessions, practical assignments, and weekly progress tracking.',
     iconName: 'BookOpen',
   },
   {
     id: '2',
-    title: 'Technical Training',
-    description: 'Hands-on workshops on React, Python, Java, and Cloud technologies.',
+    title: 'Hands-On Tech Labs',
+    description: 'Skill-focused labs in React, Node.js, Python, Java, cloud, and databases so students can convert theory into implementation.',
     iconName: 'Code',
   },
   {
     id: '3',
-    title: 'Code Review',
-    description: 'Professional code reviews to ensure your project meets industry standards.',
+    title: 'Project Build Support',
+    description: 'End-to-end project execution support from planning to final delivery, including architecture guidance, coding reviews, and testing.',
     iconName: 'CheckCircle',
   },
   {
     id: '4',
-    title: 'Documentation Support',
-    description: 'Assistance with IEEE format documentation, synopsis, and thesis writing.',
+    title: 'Portfolio and Placement Prep',
+    description: 'Resume, GitHub, deployment, and interview preparation support to present completed course projects confidently for placements.',
     iconName: 'FileText',
   },
 ];

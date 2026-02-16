@@ -4,6 +4,256 @@ import Project from "../models/Project";
 
 dotenv.config();
 
+const STOP_WORDS = new Set([
+    "the", "and", "for", "with", "from", "to", "of", "in", "on", "a", "an", "system", "app", "platform", "online"
+]);
+
+const categoryImageTags: Record<string, string[]> = {
+    "Web Development": ["web", "coding", "laptop", "dashboard"],
+    "App Development": ["mobile", "smartphone", "app", "developer"],
+    "Full Stack": ["software", "team", "programming", "technology"],
+    "AI & Machine Learning": ["ai", "data", "analytics", "computer"],
+};
+
+const buildProjectImage = (title: string, category: string, index: number) => {
+    const titleTags = title
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, " ")
+        .split(/\s+/)
+        .filter((word) => word.length > 2 && !STOP_WORDS.has(word))
+        .slice(0, 3);
+
+    const tags = [...titleTags, ...(categoryImageTags[category] || ["technology", "software"])]
+        .map((tag) => tag.replace(/[^a-z0-9]/g, ""))
+        .filter(Boolean)
+        .slice(0, 6)
+        .join(",");
+
+    // Using LoremFlickr (non-Unsplash) with stable lock for predictable MongoDB seed output.
+    return `https://loremflickr.com/1200/800/${tags || "technology,software"}?lock=${index + 100}`;
+};
+
+const buildProjectDescription = (
+    title: string,
+    category: string,
+    technologies: string[],
+    seedDescription: string
+) => {
+    const primaryTech = technologies[0] || "modern web tools";
+    const secondaryTech = technologies[1] || "backend services";
+    const tertiaryTech = technologies[2] || "data storage";
+
+    return `${title} is a ${category.toLowerCase()} solution built to solve a real workflow used by students, faculty, or operations teams. ` +
+        `${seedDescription} ` +
+        `The system architecture is designed for reliability, with a clear separation between interface, business logic, and data handling layers. ` +
+        `Core modules are implemented using ${primaryTech} and ${secondaryTech}, while ${tertiaryTech} supports secure processing and scalable performance under regular usage. ` +
+        `The project includes practical features such as role-based access, validation, reporting, and progress tracking so it can be used beyond demo scenarios. ` +
+        `Overall, this implementation demonstrates production-oriented engineering quality and provides a strong foundation for deployment, enhancement, and real user adoption.`;
+};
+
+const CATEGORY_TECH_STACKS: Record<string, string[]> = {
+    'Web Development': ['React', 'TypeScript', 'Node.js', 'Express', 'MongoDB', 'Tailwind CSS', 'JWT'],
+    'App Development': ['React Native', 'TypeScript', 'Redux Toolkit', 'Node.js', 'Express', 'MongoDB', 'Firebase Cloud Messaging'],
+    'Full Stack': ['React', 'TypeScript', 'Node.js', 'Express', 'PostgreSQL', 'Redis', 'Docker'],
+    'AI & Machine Learning': ['Python', 'Pandas', 'NumPy', 'scikit-learn', 'FastAPI', 'PostgreSQL', 'Docker'],
+};
+
+const WEB_ALLOWED_TECHS = new Set<string>([
+    'React',
+    'TypeScript',
+    'JavaScript',
+    'Node.js',
+    'Express',
+    'MongoDB',
+    'MySQL',
+    'PostgreSQL',
+    'Tailwind CSS',
+    'Bootstrap',
+    'Redux',
+    'Redux Toolkit',
+    'JWT',
+    'Firebase',
+    'Chart.js',
+    'Stripe API',
+    'Razorpay',
+    'REST API',
+    'AWS S3',
+    'Cloudinary',
+    'PDFKit',
+    'Socket.IO',
+    'WebRTC',
+    'Nginx',
+    'Docker',
+    'Git',
+]);
+
+const FULL_STACK_ALLOWED_TECHS = new Set<string>([
+    'React',
+    'TypeScript',
+    'JavaScript',
+    'Next.js',
+    'Node.js',
+    'Express',
+    'MongoDB',
+    'PostgreSQL',
+    'MySQL',
+    'Redis',
+    'Docker',
+    'JWT',
+    'REST API',
+    'GraphQL',
+    'AWS S3',
+    'Stripe',
+    'Razorpay',
+    'Socket.IO',
+    'Nginx',
+    'Prisma',
+    'Supabase',
+    'Django',
+    'Django REST Framework',
+]);
+
+const AI_ML_ALLOWED_TECHS = new Set<string>([
+    'Python',
+    'Pandas',
+    'NumPy',
+    'scikit-learn',
+    'TensorFlow',
+    'PyTorch',
+    'Keras',
+    'OpenCV',
+    'NLP',
+    'spaCy',
+    'NLTK',
+    'Transformers',
+    'FastAPI',
+    'Flask',
+    'Jupyter',
+    'Matplotlib',
+    'Seaborn',
+    'XGBoost',
+    'LightGBM',
+    'MLflow',
+    'Docker',
+    'PostgreSQL',
+    'MongoDB',
+    'Redis',
+    'Computer Vision',
+    'Deep Learning',
+    'SpeechRecognition',
+    'PyAudio',
+    'FaceNet',
+    'LangChain',
+]);
+
+const APP_DEV_ALLOWED_TECHS = new Set<string>([
+    'React Native',
+    'Flutter',
+    'Dart',
+    'TypeScript',
+    'JavaScript',
+    'Kotlin',
+    'Swift',
+    'Redux Toolkit',
+    'Firebase',
+    'Firebase Firestore',
+    'Firebase Cloud Messaging',
+    'SQLite',
+    'Room Database',
+    'Node.js',
+    'Express',
+    'MongoDB',
+    'PostgreSQL',
+    'REST API',
+    'GraphQL',
+    'JWT',
+    'Camera API',
+    'Google Fit API',
+    'Video Player',
+    'Push Notifications',
+    'WebSockets',
+    'Socket.IO',
+]);
+
+const TITLE_TECH_HINTS: Array<{ pattern: RegExp; technologies: string[] }> = [
+    { pattern: /exam|proctor/i, technologies: ['WebRTC', 'OpenCV', 'JWT', 'Role-Based Access Control'] },
+    { pattern: /attendance|recognition/i, technologies: ['OpenCV', 'FaceNet', 'WebRTC', 'Firebase'] },
+    { pattern: /chat|chatbot|assistant/i, technologies: ['Socket.IO', 'LangChain', 'OpenAI API', 'Redis'] },
+    { pattern: /e-?commerce|order|subscription/i, technologies: ['Stripe', 'Razorpay', 'Redis', 'Cloudinary'] },
+    { pattern: /voting|security|intrusion|leakage|fraud/i, technologies: ['JWT', 'AES Encryption', 'OWASP Security', 'Audit Logging'] },
+    { pattern: /lms|learning|course|certification/i, technologies: ['PostgreSQL', 'AWS S3', 'PDFKit', 'Role-Based Access Control'] },
+    { pattern: /health|hospital|fitness/i, technologies: ['FastAPI', 'PostgreSQL', 'Firebase Cloud Messaging', 'Twilio'] },
+    { pattern: /iot|smart|traffic|agriculture|home automation/i, technologies: ['MQTT', 'ESP32', 'ThingsBoard', 'InfluxDB'] },
+    { pattern: /resume|placement|job|career/i, technologies: ['NLP', 'spaCy', 'Elasticsearch', 'PostgreSQL'] },
+    { pattern: /bank|payment|crm|management|inventory/i, technologies: ['PostgreSQL', 'Redis', 'Docker', 'Chart.js'] },
+];
+
+const getRealisticTechnologies = (
+    title: string,
+    category: string,
+    existing: string[]
+) => {
+    const tech = new Set<string>(existing);
+
+    for (const base of CATEGORY_TECH_STACKS[category] ?? []) {
+        tech.add(base);
+    }
+
+    for (const hint of TITLE_TECH_HINTS) {
+        if (hint.pattern.test(title)) {
+            for (const t of hint.technologies) tech.add(t);
+        }
+    }
+
+    const normalized = Array.from(tech);
+    if (normalized.length < 6) {
+        for (const fallback of CATEGORY_TECH_STACKS[category] ?? []) {
+            normalized.push(fallback);
+            if (new Set(normalized).size >= 6) break;
+        }
+    }
+
+    let finalTech = Array.from(new Set(normalized));
+
+    if (category === 'Web Development') {
+        finalTech = finalTech.filter((t) => WEB_ALLOWED_TECHS.has(t));
+        for (const fallback of CATEGORY_TECH_STACKS['Web Development'] ?? []) {
+            if (!finalTech.includes(fallback)) finalTech.push(fallback);
+            if (finalTech.length >= 5) break;
+        }
+        return finalTech.slice(0, 6);
+    }
+
+    if (category === 'Full Stack') {
+        finalTech = finalTech.filter((t) => FULL_STACK_ALLOWED_TECHS.has(t));
+        for (const fallback of CATEGORY_TECH_STACKS['Full Stack'] ?? []) {
+            if (!finalTech.includes(fallback)) finalTech.push(fallback);
+            if (finalTech.length >= 6) break;
+        }
+        return finalTech.slice(0, 7);
+    }
+
+    if (category === 'AI & Machine Learning') {
+        finalTech = finalTech.filter((t) => AI_ML_ALLOWED_TECHS.has(t));
+        for (const fallback of CATEGORY_TECH_STACKS['AI & Machine Learning'] ?? []) {
+            if (!finalTech.includes(fallback)) finalTech.push(fallback);
+            if (finalTech.length >= 6) break;
+        }
+        return finalTech.slice(0, 7);
+    }
+
+    if (category === 'App Development') {
+        finalTech = finalTech.filter((t) => APP_DEV_ALLOWED_TECHS.has(t));
+        for (const fallback of CATEGORY_TECH_STACKS['App Development'] ?? []) {
+            if (!finalTech.includes(fallback)) finalTech.push(fallback);
+            if (finalTech.length >= 6) break;
+        }
+        return finalTech.slice(0, 7);
+    }
+
+    return finalTech.slice(0, 7);
+};
+
 const projectsData = [
     // --- WEB DEVELOPMENT PROJECTS (10) ---
     {
@@ -293,73 +543,73 @@ const projectsData = [
         technologies: ['Python', 'SpeechRecognition', 'PyAudio'],
     },
 
-    // --- FINAL YEAR & IEEE PROJECTS (10) ---
+    // --- ADVANCED PROJECTS (10) ---
     {
         title: 'Blockchain Certificate Verify',
-        category: 'IEEE Standards',
+        category: 'Full Stack',
         description: 'Decentralized application for issuing and verifying tamper-proof academic certificates.',
         imageUrl: 'https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=800',
         technologies: ['Solidity', 'Ethereum', 'Web3.js'],
     },
     {
         title: 'Secure Online Voting (IEEE)',
-        category: 'IEEE Standards',
+        category: 'Full Stack',
         description: 'Cryptographically secure voting system ensuring anonymity and integrity of votes.',
         imageUrl: 'https://images.unsplash.com/photo-1540910419868-474947ce571d?auto=format&fit=crop&q=80&w=800',
         technologies: ['Blockchain', 'React', 'Node.js'],
     },
     {
         title: 'Smart Traffic Management',
-        category: 'Final Year Major',
+        category: 'AI & Machine Learning',
         description: 'IoT system controlling traffic lights dynamically based on vehicle density.',
         imageUrl: 'https://images.unsplash.com/photo-1589938812613-2d2426372d3d?auto=format&fit=crop&q=80&w=800',
         technologies: ['IoT', 'Arduino', 'Python'],
     },
     {
         title: 'IoT Smart Home Automation',
-        category: 'Final Year Major',
+        category: 'AI & Machine Learning',
         description: 'System to control home appliances remotely via mobile app using IoT sensors.',
         imageUrl: 'https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&q=80&w=800',
         technologies: ['IoT', 'ESP8266', 'Flutter'],
     },
     {
         title: 'Cloud File Storage System',
-        category: 'Final Year Major',
+        category: 'Full Stack',
         description: 'Secure cloud storage solution with encryption and file sharing capabilities.',
         imageUrl: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=800',
         technologies: ['AWS', 'React', 'Node.js'],
     },
     {
         title: 'Intrusion Detection System',
-        category: 'IEEE Standards',
+        category: 'AI & Machine Learning',
         description: 'Network security system using machine learning to detect malicious activities.',
         imageUrl: 'https://images.unsplash.com/photo-1563206767-5b1d972e9fb9?auto=format&fit=crop&q=80&w=800',
         technologies: ['Python', 'Keras', 'Networking'],
     },
     {
         title: 'Smart Healthcare Monitoring',
-        category: 'Final Year Major',
+        category: 'AI & Machine Learning',
         description: 'Remote patient monitoring system tracking vital signs using wearable sensors.',
         imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800',
         technologies: ['IoT', 'Cloud', 'Android'],
     },
     {
         title: 'Data Leakage Detection',
-        category: 'IEEE Standards',
+        category: 'AI & Machine Learning',
         description: 'Security framework to identify and prevent unauthorized data transmission.',
         imageUrl: 'https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&q=80&w=800',
         technologies: ['Cybersecurity', 'Python', 'Java'],
     },
     {
         title: 'Smart Agriculture System',
-        category: 'Final Year Major',
+        category: 'AI & Machine Learning',
         description: 'IoT solution for automated irrigation and soil moisture monitoring for farmers.',
         imageUrl: 'https://images.unsplash.com/photo-1625246333195-f8196812c854?auto=format&fit=crop&q=80&w=800',
         technologies: ['IoT', 'Sensors', 'Mobile App'],
     },
     {
         title: 'AI Online Proctoring',
-        category: 'Final Year Major',
+        category: 'AI & Machine Learning',
         description: 'Automated proctoring system for online exams using webcam gaze tracking.',
         imageUrl: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800',
         technologies: ['Computer Vision', 'Python', 'WebRTC'],
@@ -376,10 +626,21 @@ const seedProjects = async () => {
         console.log("Cleared existing projects");
 
         // Add IDs to projects
-        const projectsWithIds = projectsData.map((project) => ({
-            ...project,
-            id: Math.random().toString(36).substring(2, 8).toUpperCase()
-        }));
+        const projectsWithIds = projectsData.map((project, index) => {
+            const technologies = getRealisticTechnologies(project.title, project.category, project.technologies);
+            return {
+                ...project,
+                technologies,
+                id: Math.random().toString(36).substring(2, 8).toUpperCase(),
+                imageUrl: buildProjectImage(project.title, project.category, index),
+                description: buildProjectDescription(
+                    project.title,
+                    project.category,
+                    technologies,
+                    project.description
+                ),
+            };
+        });
 
         // Insert new projects
         await Project.insertMany(projectsWithIds);

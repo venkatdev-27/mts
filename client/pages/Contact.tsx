@@ -1,9 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { contactAPI } from '../services/api';
+import { useLocation } from 'react-router-dom';
+
+interface ProjectEnquiryState {
+  title: string;
+  category: string;
+  imageUrl: string;
+  description: string;
+  technologies: string[];
+  estimatedTime: string;
+}
 
 const Contact: React.FC = () => {
+  const location = useLocation();
+  const projectEnquiry = (location.state as { projectEnquiry?: ProjectEnquiryState } | null)?.projectEnquiry;
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,6 +26,17 @@ const Contact: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+
+  useEffect(() => {
+    if (!projectEnquiry) return;
+    setFormData((prev) => ({
+      ...prev,
+      subject: prev.subject || 'Project Enquiry',
+      message:
+        prev.message ||
+        `Hi Team,\nI am interested in "${projectEnquiry.title}" (${projectEnquiry.category}).\nPlease share detailed plan, timeline, and pricing.\nEstimated timeline shown: ${projectEnquiry.estimatedTime}.`,
+    }));
+  }, [projectEnquiry]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,6 +76,32 @@ const Contact: React.FC = () => {
             Have questions about a project? Want to enroll? Contact us today!
           </p>
         </div>
+
+        {projectEnquiry && (
+          <div className="mb-10 bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-3">
+              <img src={projectEnquiry.imageUrl} alt={projectEnquiry.title} className="w-full h-56 md:h-full object-cover" />
+              <div className="md:col-span-2 p-6">
+                <p className="text-xs font-bold uppercase tracking-wide text-primary-600 mb-2">Selected Project Enquiry</p>
+                <h2 className="text-2xl font-extrabold text-slate-900">{projectEnquiry.title}</h2>
+                <p className="mt-2 text-slate-600">{projectEnquiry.description}</p>
+                <div className="mt-4">
+                  <p className="text-sm font-semibold text-slate-700 mb-2">Tools / Technologies Used</p>
+                  <div className="flex flex-wrap gap-2">
+                    {projectEnquiry.technologies.map((tech) => (
+                      <span key={tech} className="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <p className="mt-4 text-sm font-bold text-slate-900">
+                  Estimated Completion Time: <span className="text-primary-700">{projectEnquiry.estimatedTime}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Contact Info */}

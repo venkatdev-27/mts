@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Tag, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Tag, ExternalLink, Star, Clock3 } from 'lucide-react';
 import { projectAPI } from '../services/api';
 import { Project } from '../types';
+import { resolveImageUrl } from '../lib/resolveImageUrl';
+import { getProjectMeta } from '../lib/projectMeta';
 
 const ProjectDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -59,8 +61,9 @@ const ProjectDetails: React.FC = () => {
         );
     }
 
-    // Split description into lines for special formatting
-    const descriptionLines = project.description.split('\n');
+    const meta = getProjectMeta(project);
+    const estimatedTime = meta.durationLabel;
+    const imageSrc = resolveImageUrl(project.imageUrl);
 
     return (
         <div className="min-h-screen bg-slate-50 pt-28 pb-16">
@@ -78,12 +81,22 @@ const ProjectDetails: React.FC = () => {
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
                     <div className="relative h-64 md:h-96">
                         <img
-                            src={project.imageUrl}
+                            src={imageSrc}
                             alt={project.title}
                             className="w-full h-full object-cover"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                            <div className="flex items-center gap-2 mb-3">
+                                <span className="inline-flex items-center px-3 py-1 bg-white/90 text-slate-800 rounded-md text-sm font-bold">
+                                    <Star className="w-4 h-4 mr-1 text-yellow-500 fill-yellow-500" />
+                                    {meta.rating} Rating
+                                </span>
+                                <span className="inline-flex items-center px-3 py-1 bg-white/90 text-slate-800 rounded-md text-sm font-bold">
+                                    <Clock3 className="w-4 h-4 mr-1 text-primary-600" />
+                                    {meta.durationLabel}
+                                </span>
+                            </div>
                             <span className="inline-block px-3 py-1 bg-white/90 text-primary-700 rounded-md text-sm font-bold mb-3">
                                 {project.category}
                             </span>
@@ -97,28 +110,10 @@ const ProjectDetails: React.FC = () => {
                         {/* Description */}
                         <div className="mb-8">
                             <h2 className="text-2xl font-bold text-slate-900 mb-4">Project Description</h2>
-                            <div className="prose prose-slate max-w-none">
-                                {descriptionLines.map((line, index) => {
-                                    // Highlight lines 7-8 as requested
-                                    if (index >= 6 && index <= 7) {
-                                        return (
-                                            <p key={index} className="text-slate-700 text-lg leading-relaxed bg-yellow-50 p-3 rounded-md border-l-4 border-yellow-400">
-                                                {line || project.description}
-                                            </p>
-                                        );
-                                    }
-                                    return line ? (
-                                        <p key={index} className="text-slate-700 text-lg leading-relaxed">
-                                            {line}
-                                        </p>
-                                    ) : null;
-                                })}
-                                {/* If description doesn't have multiple lines, show it with special formatting */}
-                                {descriptionLines.length === 1 && (
-                                    <p className="text-slate-700 text-lg leading-relaxed bg-primary-50 p-4 rounded-md border-l-4 border-primary-400">
-                                        {project.description}
-                                    </p>
-                                )}
+                            <div className="rounded-xl bg-primary-50 border border-primary-100 p-4 sm:p-5">
+                                <p className="max-w-[350px] sm:max-w-none mx-auto sm:mx-0 text-slate-700 text-sm sm:text-base leading-7 line-clamp-[15] sm:line-clamp-none">
+                                    {project.description}
+                                </p>
                             </div>
                         </div>
 
@@ -146,7 +141,20 @@ const ProjectDetails: React.FC = () => {
                                     Get in touch with us to learn more or to start working on a similar project.
                                 </p>
                                 <button
-                                    onClick={() => navigate('/contact')}
+                                    onClick={() =>
+                                        navigate('/contact', {
+                                            state: {
+                                                projectEnquiry: {
+                                                    title: project.title,
+                                                    category: project.category,
+                                                    imageUrl: project.imageUrl,
+                                                    description: project.description,
+                                                    technologies: project.technologies,
+                                                    estimatedTime,
+                                                },
+                                            },
+                                        })
+                                    }
                                     className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors shadow-md hover:shadow-lg"
                                 >
                                     Enquire Now

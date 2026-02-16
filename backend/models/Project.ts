@@ -31,8 +31,6 @@ const ProjectSchema: Schema = new Schema(
                 "App Development",
                 "Full Stack",
                 "AI & Machine Learning",
-                "IEEE Standards",
-                "Final Year Major",
             ],
         },
         description: {

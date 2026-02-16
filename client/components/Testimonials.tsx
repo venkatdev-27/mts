@@ -1,93 +1,195 @@
-import React from 'react';
-import { Quote, Star } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 
 const testimonials = [
     {
         id: 1,
-        content: "The mentorship I received was invaluable. They didn't just give me the code; they explained every concept in depth. I was able to answer every question in my viva with confidence.",
-        author: "Priya Sharma",
-        role: "Final Year B.Tech Student",
-        initials: "PS",
-        color: "bg-blue-500",
-        rating: 5
+        name: "Ravi Kumar",
+        role: "Full Stack Developer",
+        content: "The AI course was a game changer. The mentors explained complex concepts in such a simple way. I landed a job at a top MNC within 2 months of completion!",
+        rating: 5,
+        image: "https://randomuser.me/api/portraits/men/32.jpg"
     },
     {
         id: 2,
-        content: "We outsourced our department's final year project guidance to them. The professionalism and technical quality were outstanding. Best UI/UX designs I've seen in student projects.",
-        author: "Dr. Rajesh Kumar",
-        role: "Assistant Professor, CS Department",
-        initials: "RK",
-        color: "bg-emerald-500",
-        rating: 5
+        name: "Priya Sharma",
+        role: "Data Scientist",
+        content: "MTS provides real-time project experience which is missing in other institutes. The hands-on training helped me crack my interview easily.",
+        rating: 5,
+        image: "https://randomuser.me/api/portraits/women/44.jpg"
     },
     {
         id: 3,
-        content: "I was struggling with my AI project documentation and implementation. Their team helped me build a stunning sophisticated web app that won the best project award at my college.",
-        author: "Arun Patel",
-        role: "M.Tech Scholar",
-        initials: "AP",
-        color: "bg-purple-500",
-        rating: 5
+        name: "Arun Bose",
+        role: "Student",
+        content: "I was struggling with my final year project. The team at MTS not only helped me complete it but also taught me how to present it. Highly recommended!",
+        rating: 5,
+        image: "https://randomuser.me/api/portraits/men/86.jpg"
+    },
+    {
+        id: 4,
+        name: "Sneha Reddy",
+        role: "Software Engineer",
+        content: "Best place to learn React and Node.js. The syllabus is updated with current industry trends. The support team is always available to clear doubts.",
+        rating: 4,
+        image: "https://randomuser.me/api/portraits/women/68.jpg"
+    },
+    {
+        id: 5,
+        name: "Karthik N",
+        role: "Cloud Engineer",
+        content: "The devops training was practical and to the point. I learned Docker and Kubernetes which are essential for my career growth.",
+        rating: 5,
+        image: "https://randomuser.me/api/portraits/men/11.jpg"
+    },
+    {
+        id: 6,
+        name: "Anjali Gupta",
+        role: "UI/UX Designer",
+        content: "The design principles taught here are top-notch. I built a strong portfolio that impressed my recruiters. Thank you MTS!",
+        rating: 5,
+        image: "https://randomuser.me/api/portraits/women/33.jpg"
+    },
+    {
+        id: 7,
+        name: "Vikram Singh",
+        role: "Python Developer",
+        content: "From zero coding knowledge to a Python developer. The journey was amazing. The mentors are very patient and knowledgeable.",
+        rating: 5,
+        image: "https://randomuser.me/api/portraits/men/45.jpg"
+    },
+    {
+        id: 8,
+        name: "Meera Nair",
+        role: "Web Developer",
+        content: "Excellent infrastructure and supportive faculties. The placement assistance is genuine and they help you until you get placed.",
+        rating: 4,
+        image: "https://randomuser.me/api/portraits/women/12.jpg"
     }
 ];
 
-const Testimonials: React.FC = () => {
+export default function Testimonials() {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+    // Responsive logic: 1 card for mobile (<768px), 2 cards for desktop (>=768px)
+    const isMobile = viewportWidth < 768;
+    const cardsToShow = isMobile ? 1 : 2;
+    const maxIndex = testimonials.length - cardsToShow;
+
+    useEffect(() => {
+        const handleResize = () => setViewportWidth(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    // Autoplay
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+        }, 4000); // 4 seconds slide
+
+        return () => clearInterval(interval);
+    }, [maxIndex, currentIndex]);
+
+    const nextSlide = () => {
+        setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    };
+
+    const prevSlide = () => {
+        setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+    };
+
     return (
-        <section className="py-20 bg-slate-50 overflow-hidden relative">
-            {/* Background Decor */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                <div className="absolute top-20 left-0 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-20 right-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl"></div>
+        <section className="py-20 bg-white text-slate-900 overflow-hidden relative border-t border-slate-100">
+            {/* Background Decor - Subtle light bloblings */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-50 pointer-events-none">
+                <div className="absolute -top-[20%] -right-[10%] w-[500px] h-[500px] rounded-full bg-teal-50 blur-[100px]" />
+                <div className="absolute -bottom-[20%] -left-[10%] w-[500px] h-[500px] rounded-full bg-blue-50 blur-[100px]" />
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="text-center max-w-3xl mx-auto mb-16">
-                    <div className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 border border-blue-100 mb-6">
-                        <span className="text-xs font-bold text-blue-600 uppercase tracking-wide">Testimonials</span>
-                    </div>
-                    <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
-                        Trusted by Students & <span className="text-primary-600">Faculty</span>
-                    </h2>
-                    <p className="text-lg text-slate-500 leading-relaxed">
-                        Don't just take our word for it. Here's what the academic community has to say about our guidance and project quality.
-                    </p>
+            <div className="container mx-auto px-4 relative z-10">
+                <div className="text-center mb-16">
+                    <span className="text-teal-600 font-bold tracking-wider uppercase text-sm">Success Stories</span>
+                    <h2 className="text-3xl md:text-5xl font-extrabold mt-2 text-slate-900">What Our Students Say</h2>
+                    <div className="w-20 h-1 bg-gradient-to-r from-teal-500 to-blue-600 mx-auto mt-4 rounded-full" />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {testimonials.map((testimonial) => (
-                        <div
-                            key={testimonial.id}
-                            className="bg-white rounded-2xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100 relative group hover:-translate-y-2 transition-transform duration-300"
+                <div className="relative max-w-6xl mx-auto">
+                    {/* Carousel Track */}
+                    <div className="overflow-hidden">
+                        <motion.div
+                            className="flex"
+                            animate={{ x: `-${currentIndex * (100 / cardsToShow)}%` }}
+                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
                         >
-                            <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-primary-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg transform rotate-12 group-hover:rotate-0 transition-transform duration-300">
-                                <Quote className="w-5 h-5 text-white" />
-                            </div>
+                            {testimonials.map((testimonial) => (
+                                <div
+                                    key={testimonial.id}
+                                    style={{ minWidth: `${100 / cardsToShow}%` }}
+                                    className="p-4"
+                                >
+                                    <div className="bg-white border border-slate-100 p-8 rounded-2xl h-full flex flex-col relative shadow-lg hover:shadow-xl transition-shadow duration-300">
+                                        <Quote className="absolute top-6 right-6 text-slate-100 w-10 h-10" />
 
-                            <div className="flex gap-1 mb-6">
-                                {[...Array(testimonial.rating)].map((_, i) => (
-                                    <Star key={i} className="w-5 h-5 text-amber-400 fill-amber-400" />
-                                ))}
-                            </div>
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <img
+                                                src={testimonial.image}
+                                                alt={testimonial.name}
+                                                className="w-14 h-14 rounded-full object-cover border-2 border-teal-500 shadow-sm"
+                                            />
+                                            <div>
+                                                <h3 className="font-bold text-lg text-slate-900">{testimonial.name}</h3>
+                                                <p className="text-sm text-teal-600 font-medium">{testimonial.role}</p>
+                                            </div>
+                                        </div>
 
-                            <blockquote className="text-slate-600 mb-8 leading-relaxed italic">
-                                "{testimonial.content}"
-                            </blockquote>
+                                        <div className="flex gap-1 mb-4">
+                                            {[...Array(5)].map((_, i) => (
+                                                <Star
+                                                    key={i}
+                                                    className={`w-4 h-4 ${i < testimonial.rating ? "text-yellow-400 fill-yellow-400" : "text-slate-200"}`}
+                                                />
+                                            ))}
+                                        </div>
 
-                            <div className="flex items-center border-t border-slate-100 pt-6">
-                                <div className={`w-12 h-12 rounded-full ${testimonial.color} text-white flex items-center justify-center font-bold text-lg shadow-md`}>
-                                    {testimonial.initials}
+                                        <p className="text-slate-600 italic leading-relaxed flex-grow">
+                                            "{testimonial.content}"
+                                        </p>
+                                    </div>
                                 </div>
-                                <div className="ml-4">
-                                    <h4 className="text-base font-bold text-slate-900">{testimonial.author}</h4>
-                                    <p className="text-sm text-slate-500 font-medium">{testimonial.role}</p>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                            ))}
+                        </motion.div>
+                    </div>
+
+                    {/* Navigation Buttons */}
+                    <button
+                        onClick={prevSlide}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 bg-white hover:bg-slate-50 border border-slate-200 p-3 rounded-full text-slate-700 shadow-md transition-all hidden md:block"
+                    >
+                        <ChevronLeft className="w-6 h-6" />
+                    </button>
+                    <button
+                        onClick={nextSlide}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 bg-white hover:bg-slate-50 border border-slate-200 p-3 rounded-full text-slate-700 shadow-md transition-all hidden md:block"
+                    >
+                        <ChevronRight className="w-6 h-6" />
+                    </button>
+
+                    {/* Dots Indicator */}
+                    <div className="flex justify-center gap-2 mt-8">
+                        {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => setCurrentIndex(idx)}
+                                className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === currentIndex ? "w-8 bg-teal-500" : "bg-slate-300 hover:bg-slate-400"}`}
+                            />
+                        ))}
+                    </div>
+
                 </div>
             </div>
         </section>
     );
-};
-
-export default Testimonials;
+}

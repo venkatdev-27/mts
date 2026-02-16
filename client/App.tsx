@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -9,6 +9,16 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import ProjectDetails from './pages/ProjectDetails';
 import ScrollToTop from './components/ScrollToTop';
+import Courses from './pages/Courses';
+import CourseDetails from './pages/CourseDetails';
+import TermsAndConditions from './pages/TermsAndConditions';
+import Register from './pages/Register';
+import AdminLayout from './layouts/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminCourses from './pages/admin/AdminCourses';
+import AdminRegistrations from './pages/admin/AdminRegistrations';
+import AuthPage from './pages/AuthPage';
+// Assuming AuthPage exists or will be created
 
 function App() {
   return (
@@ -20,10 +30,24 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/courses/:id" element={<CourseDetails />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/terms" element={<TermsAndConditions />} />
+            <Route path="/auth" element={<AuthPage />} /> {/* New route */}
             <Route path="/projects/:id" element={<ProjectDetails />} />
+
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="courses" element={<AdminCourses />} />
+              <Route path="registrations" element={<AdminRegistrations />} />
+            </Route>
+
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
         <Footer />

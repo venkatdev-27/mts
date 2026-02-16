@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProjectCard } from '../components/ProjectCard';
 import { ProjectCategory, Project } from '../types';
 import { Filter, Search } from 'lucide-react';
@@ -28,9 +28,6 @@ const Projects: React.FC = () => {
   }, [selectedCategory]);
 
   const categories = ['All', ...Object.values(ProjectCategory)];
-
-  // No longer needed as filtering is done server-side
-  const filteredProjects = projects;
 
   return (
     <div className="bg-slate-50 min-h-screen pt-28 pb-16 font-sans">
@@ -79,9 +76,9 @@ const Projects: React.FC = () => {
             </div>
 
             {/* Projects Grid */}
-            {filteredProjects.length > 0 ? (
+            {projects.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                {filteredProjects.map((project) => (
+                {projects.map((project) => (
                   <ProjectCard key={project.id} project={project} />
                 ))}
               </div>

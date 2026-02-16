@@ -27,8 +27,6 @@ export const PROJECT_CATEGORIES = [
     'App Development',
     'Full Stack',
     'AI & Machine Learning',
-    'IEEE Standards',
-    'Final Year Major',
 ] as const;
 
 export type ProjectCategory = typeof PROJECT_CATEGORIES[number];

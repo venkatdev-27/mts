@@ -11,9 +11,7 @@ export enum ProjectCategory {
   WEB_DEV = 'Web Development',
   APP_DEV = 'App Development',
   FULL_STACK = 'Full Stack',
-  AI_ML = 'AI & Machine Learning',
-  IEEE = 'IEEE Standards',
-  FINAL_YEAR = 'Final Year Major'
+  AI_ML = 'AI & Machine Learning'
 }
 
 export interface Service {

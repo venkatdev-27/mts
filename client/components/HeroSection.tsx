@@ -1,92 +1,108 @@
-import React from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { motion, Variants } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowRight, Play } from "lucide-react";
+import AnimatedBadge from "@/registry/eldoraui/animated-badge";
 
-const HeroSection: React.FC = () => {
+export function AnimatedBadgeDemo() {
   return (
-    <div className="relative bg-white pt-28 pb-12 lg:pt-32 lg:pb-32 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="lg:grid lg:grid-cols-12 lg:gap-16 items-center">
-          
-          {/* Text Content */}
-          <div className="lg:col-span-6 text-center lg:text-left z-10 relative">
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary-50 border border-primary-100 mb-6">
-              <span className="flex h-2 w-2 rounded-full bg-primary-600 mr-2"></span>
-              <span className="text-xs font-semibold text-primary-700 uppercase tracking-wide">Premium Educational Projects</span>
-            </div>
-            
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-4 sm:mb-6 leading-tight">
-              Innovate Your <br className="hidden lg:block"/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-400">
-                Engineering Career
-              </span>
-            </h1>
-            
-            <p className="text-base sm:text-xl text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              Maruthi Tech Solutions bridges the gap between academic theory and industry reality. We provide high-quality, real-time projects with complete mentorship.
-            </p>
-            
-            <div className="flex flex-row gap-3 justify-center lg:justify-start">
-              <Link
-                to="/projects"
-                className="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-bold text-white bg-primary-600 rounded-xl shadow-lg shadow-primary-500/30 hover:bg-primary-700 hover:shadow-primary-600/40 transform hover:-translate-y-1 transition-all duration-300 whitespace-nowrap"
-              >
-                Explore Projects
-                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-              </Link>
-              <Link
-                to="/contact"
-                className="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-bold text-slate-700 bg-white border-2 border-slate-100 rounded-xl hover:border-primary-200 hover:bg-primary-50 hover:text-primary-700 transition-all duration-300 whitespace-nowrap"
-              >
-                Contact Mentors
-              </Link>
-            </div>
-            
-            <div className="mt-8 flex items-center justify-center lg:justify-start space-x-4 sm:space-x-8 text-slate-400">
-              <div className="flex items-center">
-                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-secondary-500 mr-1.5 sm:mr-2" />
-                <span className="text-xs sm:text-sm font-medium">IEEE Standards</span>
-              </div>
-              <div className="flex items-center">
-                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-secondary-500 mr-1.5 sm:mr-2" />
-                <span className="text-xs sm:text-sm font-medium">Real-time Code</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Image Content */}
-          <div className="lg:col-span-6 mt-10 lg:mt-0 relative px-4 sm:px-0">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-primary-900/10 border border-slate-100">
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary-600/20 to-transparent mix-blend-overlay z-10"></div>
-              <img
-                className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1567&q=80"
-                alt="Students collaborating"
-              />
-            </div>
-            
-            {/* Floating Badge - Hidden on mobile to save space/reduce clutter */}
-            <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-slate-100 hidden md:block z-20">
-              <div className="flex items-center gap-3">
-                <div className="bg-green-100 p-2 rounded-lg">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500 font-semibold uppercase">Admissions Open</p>
-                  <p className="text-sm font-bold text-slate-900">Batch 2024-25</p>
-                </div>
-              </div>
-            </div>
-            
-             {/* Decorative Elements */}
-             <div className="absolute -top-12 -right-12 w-32 h-32 sm:w-64 sm:h-64 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-             <div className="absolute -bottom-12 -left-12 w-32 h-32 sm:w-64 sm:h-64 bg-secondary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-          </div>
-          
-        </div>
-      </div>
+    <div className="relative" suppressHydrationWarning>
+      <AnimatedBadge
+        text="Introducing Maruthi Tech Solutions"
+        color="#22d3ee"
+      />
     </div>
   );
-};
+}
 
-export default HeroSection;
+export default function Hero() {
+
+  
+  const fadeIn: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  return (
+    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#020617] text-white selection:bg-teal-500 selection:text-white">
+
+      {/* 🌌 BACKGROUND EFFECTS */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Deep Teal/Blue Gradient Base matching screenshot */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0f4c75] via-[#002b4d] to-[#020617]" />
+
+        {/* Glow Orbs */}
+        <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-teal-500/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-cyan-600/10 rounded-full blur-[120px] animate-pulse delay-1000" />
+
+        {/* Grid pattern overlay (optional tech feel) */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]" />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-6 h-full flex flex-col items-center justify-center pt-32 pb-20">
+
+        {/* 📝 CONTENT */}
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: { transition: { staggerChildren: 0.1 } }
+          }}
+          className="flex flex-col items-center text-center space-y-8 max-w-4xl mx-auto"
+        >
+          {/* Badge */}
+          <motion.div variants={fadeIn}>
+            <AnimatedBadgeDemo />
+          </motion.div>
+
+          {/* Heading */}
+          <motion.h1 variants={fadeIn} className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight text-white/90">
+            Build Real Skills. <br className="hidden md:block" />
+            Get <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-300 drop-shadow-[0_0_10px_rgba(45,212,191,0.2)]">Career-Ready</span> Fast.
+          </motion.h1>
+
+          {/* Subtext */}
+          <motion.p variants={fadeIn} className="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed">
+            Master in-demand technologies with hands-on projects,
+            strong mentorship, and placement support at MTS.
+          </motion.p>
+
+          {/* Buttons */}
+          <motion.div variants={fadeIn} className="flex flex-wrap gap-4 pt-4 justify-center">
+            <Link
+              to="/register"
+              className="group relative px-8 py-3.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-xl font-bold text-[#022c44] shadow-lg shadow-cyan-500/20 hover:from-teal-400 hover:to-cyan-400 hover:shadow-cyan-400/30 hover:scale-105 transition-all duration-300 flex items-center gap-2 overflow-hidden"
+            >
+              <span className="relative z-10">Get Started</span>
+              <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
+            </Link>
+
+
+          </motion.div>
+
+          {/* Stats Row */}
+          <motion.div variants={fadeIn} className="grid grid-cols-3 gap-12 pt-12 border-t border-white/10 w-full max-w-3xl mx-auto">
+            <div className="flex flex-col">
+              <div className="flex justify-center items-center gap-2 text-4xl font-bold text-white">
+                30k+
+              </div>
+              <span className="text-sm text-gray-500 font-medium uppercase tracking-wide">Enrollments</span>
+            </div>
+            <div className="flex flex-col">
+              <div className="flex justify-center items-center gap-2 text-4xl font-bold text-white">
+                97%
+              </div>
+              <span className="text-sm text-gray-500 font-medium uppercase tracking-wide">Success Rate</span>
+            </div>
+            <div className="flex flex-col">
+              <div className="flex justify-center items-center gap-2 text-4xl font-bold text-white">
+                15
+              </div>
+              <span className="text-sm text-gray-500 font-medium uppercase tracking-wide">Courses</span>
+            </div>
+          </motion.div>
+        </motion.div>
+
+      </div>
+    </section>
+  );
+}

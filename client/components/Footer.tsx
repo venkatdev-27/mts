@@ -1,19 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Code2 } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-slate-900 text-white pt-16 pb-8 border-t border-slate-800">
+    <footer className="relative overflow-hidden text-white pt-16 pb-8 border-t border-slate-700 bg-[radial-gradient(circle_at_15%_20%,rgba(20,184,166,0.22),transparent_38%),radial-gradient(circle_at_85%_15%,rgba(99,102,241,0.2),transparent_36%),linear-gradient(160deg,#020617_0%,#0b1120_48%,#111827_100%)]">
+      <div className="absolute inset-0 pointer-events-none opacity-[0.08] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:42px_42px]"></div>
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-400/50 to-transparent"></div>
+      <div className="absolute -bottom-28 left-1/2 -translate-x-1/2 w-[620px] h-[280px] bg-primary-500/10 blur-3xl rounded-full pointer-events-none"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 mb-12">
           {/* Company Info */}
           <div className="col-span-1 sm:col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-               <div className="bg-primary-600 p-2 rounded-lg">
-                <Code2 className="h-5 w-5 text-white" />
-              </div>
-              <span className="font-bold text-xl text-white">Maruthi<span className="text-primary-400">Tech</span></span>
+            <Link to="/" className="flex items-center mb-4">
+              <img
+                src="/models/logo.png"
+                alt="Maruthi Tech Solutions"
+                className="h-12 sm:h-14 w-auto object-contain"
+              />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
               Empowering students with real-time projects, mentorship, and cutting-edge technology training for a brighter career future.
@@ -52,6 +56,11 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/courses" className="text-slate-400 hover:text-primary-400 text-sm transition-colors flex items-center">
+                  <span className="w-1.5 h-1.5 bg-primary-600 rounded-full mr-2"></span> Courses
+                </Link>
+              </li>
+              <li>
                 <Link to="/projects" className="text-slate-400 hover:text-primary-400 text-sm transition-colors flex items-center">
                    <span className="w-1.5 h-1.5 bg-primary-600 rounded-full mr-2"></span> Projects
                 </Link>
@@ -59,21 +68,27 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Projects */}
+          {/* Top Courses */}
           <div>
-            <h3 className="text-lg font-bold mb-6 text-white">Top Categories</h3>
+            <h3 className="text-lg font-bold mb-6 text-white">Top Courses</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/projects" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">Web Development</Link>
+                <Link to="/courses" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">Full Stack Development</Link>
               </li>
               <li>
-                <Link to="/projects" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">AI & Machine Learning</Link>
+                <Link to="/courses" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">Python for Developers</Link>
               </li>
               <li>
-                <Link to="/projects" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">IoT Systems</Link>
+                <Link to="/courses" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">Data Science & AI/ML</Link>
               </li>
               <li>
-                <Link to="/projects" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">IEEE Standards</Link>
+                <Link to="/courses" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">React Frontend Mastery</Link>
+              </li>
+              <li>
+                <Link to="/courses" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">Java Backend Development</Link>
+              </li>
+              <li>
+                <Link to="/courses" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">Mobile App Development</Link>
               </li>
             </ul>
           </div>
@@ -109,9 +124,7 @@ const Footer: React.FC = () => {
             © {new Date().getFullYear()} Maruthi Tech Solutions. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-slate-500 hover:text-white text-xs transition-colors">Privacy Policy</a>
-            <a href="#" className="text-slate-500 hover:text-white text-xs transition-colors">Terms of Service</a>
-            <a href="#" className="text-slate-500 hover:text-white text-xs transition-colors">Cookie Policy</a>
+            <Link to="/terms" className="text-slate-500 hover:text-white text-xs transition-colors">Terms and Conditions</Link>
           </div>
         </div>
       </div>

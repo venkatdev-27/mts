@@ -1,6 +1,6 @@
 import { Project, ProjectCategory } from '../types';
 
-export const projects: Project[] = [
+const baseProjects: Project[] = [
   // --- WEB DEVELOPMENT PROJECTS (10) ---
   {
     id: 'web-1',
@@ -329,11 +329,11 @@ export const projects: Project[] = [
     technologies: ['Python', 'SpeechRecognition', 'PyAudio'],
   },
 
-  // --- FINAL YEAR & IEEE PROJECTS (10) ---
+  // --- ADVANCED PROJECTS (10) ---
   {
     id: 'ieee-1',
     title: 'Blockchain Certificate Verify',
-    category: ProjectCategory.IEEE,
+    category: ProjectCategory.FULL_STACK,
     description: 'Decentralized application for issuing and verifying tamper-proof academic certificates.',
     imageUrl: 'https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=800',
     technologies: ['Solidity', 'Ethereum', 'Web3.js'],
@@ -341,7 +341,7 @@ export const projects: Project[] = [
   {
     id: 'ieee-2',
     title: 'Secure Online Voting (IEEE)',
-    category: ProjectCategory.IEEE,
+    category: ProjectCategory.FULL_STACK,
     description: 'Cryptographically secure voting system ensuring anonymity and integrity of votes.',
     imageUrl: 'https://images.unsplash.com/photo-1540910419868-474947ce571d?auto=format&fit=crop&q=80&w=800',
     technologies: ['Blockchain', 'React', 'Node.js'],
@@ -349,7 +349,7 @@ export const projects: Project[] = [
   {
     id: 'fy-1',
     title: 'Smart Traffic Management',
-    category: ProjectCategory.FINAL_YEAR,
+    category: ProjectCategory.AI_ML,
     description: 'IoT system controlling traffic lights dynamically based on vehicle density.',
     imageUrl: 'https://images.unsplash.com/photo-1589938812613-2d2426372d3d?auto=format&fit=crop&q=80&w=800',
     technologies: ['IoT', 'Arduino', 'Python'],
@@ -357,7 +357,7 @@ export const projects: Project[] = [
   {
     id: 'fy-2',
     title: 'IoT Smart Home Automation',
-    category: ProjectCategory.FINAL_YEAR,
+    category: ProjectCategory.AI_ML,
     description: 'System to control home appliances remotely via mobile app using IoT sensors.',
     imageUrl: 'https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&q=80&w=800',
     technologies: ['IoT', 'ESP8266', 'Flutter'],
@@ -365,7 +365,7 @@ export const projects: Project[] = [
   {
     id: 'fy-3',
     title: 'Cloud File Storage System',
-    category: ProjectCategory.FINAL_YEAR,
+    category: ProjectCategory.FULL_STACK,
     description: 'Secure cloud storage solution with encryption and file sharing capabilities.',
     imageUrl: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=800',
     technologies: ['AWS', 'React', 'Node.js'],
@@ -373,7 +373,7 @@ export const projects: Project[] = [
   {
     id: 'ieee-3',
     title: 'Intrusion Detection System',
-    category: ProjectCategory.IEEE,
+    category: ProjectCategory.AI_ML,
     description: 'Network security system using machine learning to detect malicious activities.',
     imageUrl: 'https://images.unsplash.com/photo-1563206767-5b1d972e9fb9?auto=format&fit=crop&q=80&w=800',
     technologies: ['Python', 'Keras', 'Networking'],
@@ -381,7 +381,7 @@ export const projects: Project[] = [
   {
     id: 'fy-4',
     title: 'Smart Healthcare Monitoring',
-    category: ProjectCategory.FINAL_YEAR,
+    category: ProjectCategory.AI_ML,
     description: 'Remote patient monitoring system tracking vital signs using wearable sensors.',
     imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800',
     technologies: ['IoT', 'Cloud', 'Android'],
@@ -389,7 +389,7 @@ export const projects: Project[] = [
   {
     id: 'ieee-4',
     title: 'Data Leakage Detection',
-    category: ProjectCategory.IEEE,
+    category: ProjectCategory.AI_ML,
     description: 'Security framework to identify and prevent unauthorized data transmission.',
     imageUrl: 'https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&q=80&w=800',
     technologies: ['Cybersecurity', 'Python', 'Java'],
@@ -397,7 +397,7 @@ export const projects: Project[] = [
   {
     id: 'fy-5',
     title: 'Smart Agriculture System',
-    category: ProjectCategory.FINAL_YEAR,
+    category: ProjectCategory.AI_ML,
     description: 'IoT solution for automated irrigation and soil moisture monitoring for farmers.',
     imageUrl: 'https://images.unsplash.com/photo-1625246333195-f8196812c854?auto=format&fit=crop&q=80&w=800',
     technologies: ['IoT', 'Sensors', 'Mobile App'],
@@ -405,9 +405,217 @@ export const projects: Project[] = [
   {
     id: 'fy-6',
     title: 'AI Online Proctoring',
-    category: ProjectCategory.FINAL_YEAR,
+    category: ProjectCategory.AI_ML,
     description: 'Automated proctoring system for online exams using webcam gaze tracking.',
     imageUrl: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800',
     technologies: ['Computer Vision', 'Python', 'WebRTC'],
   },
 ];
+
+const CATEGORY_TECH_STACKS: Record<ProjectCategory, string[]> = {
+  [ProjectCategory.WEB_DEV]: ['React', 'TypeScript', 'Node.js', 'Express', 'MongoDB', 'Tailwind CSS', 'JWT'],
+  [ProjectCategory.APP_DEV]: ['React Native', 'TypeScript', 'Redux Toolkit', 'Node.js', 'Express', 'MongoDB', 'Firebase Cloud Messaging'],
+  [ProjectCategory.FULL_STACK]: ['React', 'TypeScript', 'Node.js', 'Express', 'PostgreSQL', 'Redis', 'Docker'],
+  [ProjectCategory.AI_ML]: ['Python', 'Pandas', 'NumPy', 'scikit-learn', 'FastAPI', 'PostgreSQL', 'Docker'],
+};
+
+const WEB_ALLOWED_TECHS = new Set<string>([
+  'React',
+  'TypeScript',
+  'JavaScript',
+  'Node.js',
+  'Express',
+  'MongoDB',
+  'MySQL',
+  'PostgreSQL',
+  'Tailwind CSS',
+  'Bootstrap',
+  'Redux',
+  'Redux Toolkit',
+  'JWT',
+  'Firebase',
+  'Chart.js',
+  'Stripe API',
+  'Razorpay',
+  'REST API',
+  'AWS S3',
+  'Cloudinary',
+  'PDFKit',
+  'Socket.IO',
+  'WebRTC',
+  'Nginx',
+  'Docker',
+  'Git',
+]);
+
+const FULL_STACK_ALLOWED_TECHS = new Set<string>([
+  'React',
+  'TypeScript',
+  'JavaScript',
+  'Next.js',
+  'Node.js',
+  'Express',
+  'MongoDB',
+  'PostgreSQL',
+  'MySQL',
+  'Redis',
+  'Docker',
+  'JWT',
+  'REST API',
+  'GraphQL',
+  'AWS S3',
+  'Stripe',
+  'Razorpay',
+  'Socket.IO',
+  'Nginx',
+  'Prisma',
+  'Supabase',
+  'Django',
+  'Django REST Framework',
+]);
+
+const AI_ML_ALLOWED_TECHS = new Set<string>([
+  'Python',
+  'Pandas',
+  'NumPy',
+  'scikit-learn',
+  'TensorFlow',
+  'PyTorch',
+  'Keras',
+  'OpenCV',
+  'NLP',
+  'spaCy',
+  'NLTK',
+  'Transformers',
+  'FastAPI',
+  'Flask',
+  'Jupyter',
+  'Matplotlib',
+  'Seaborn',
+  'XGBoost',
+  'LightGBM',
+  'MLflow',
+  'Docker',
+  'PostgreSQL',
+  'MongoDB',
+  'Redis',
+  'Computer Vision',
+  'Deep Learning',
+  'SpeechRecognition',
+  'PyAudio',
+  'FaceNet',
+  'LangChain',
+]);
+
+const APP_DEV_ALLOWED_TECHS = new Set<string>([
+  'React Native',
+  'Flutter',
+  'Dart',
+  'TypeScript',
+  'JavaScript',
+  'Kotlin',
+  'Swift',
+  'Redux Toolkit',
+  'Firebase',
+  'Firebase Firestore',
+  'Firebase Cloud Messaging',
+  'SQLite',
+  'Room Database',
+  'Node.js',
+  'Express',
+  'MongoDB',
+  'PostgreSQL',
+  'REST API',
+  'GraphQL',
+  'JWT',
+  'Camera API',
+  'Google Fit API',
+  'Video Player',
+  'Push Notifications',
+  'WebSockets',
+  'Socket.IO',
+]);
+
+const TITLE_TECH_HINTS: Array<{ pattern: RegExp; technologies: string[] }> = [
+  { pattern: /exam|proctor/i, technologies: ['WebRTC', 'OpenCV', 'JWT', 'Role-Based Access Control'] },
+  { pattern: /attendance|recognition/i, technologies: ['OpenCV', 'FaceNet', 'WebRTC', 'Firebase'] },
+  { pattern: /chat|chatbot|assistant/i, technologies: ['Socket.IO', 'LangChain', 'OpenAI API', 'Redis'] },
+  { pattern: /e-?commerce|order|subscription/i, technologies: ['Stripe', 'Razorpay', 'Redis', 'Cloudinary'] },
+  { pattern: /voting|security|intrusion|leakage|fraud/i, technologies: ['JWT', 'AES Encryption', 'OWASP Security', 'Audit Logging'] },
+  { pattern: /lms|learning|course|certification/i, technologies: ['PostgreSQL', 'AWS S3', 'PDFKit', 'Role-Based Access Control'] },
+  { pattern: /health|hospital|fitness/i, technologies: ['FastAPI', 'PostgreSQL', 'Firebase Cloud Messaging', 'Twilio'] },
+  { pattern: /iot|smart|traffic|agriculture|home automation/i, technologies: ['MQTT', 'ESP32', 'ThingsBoard', 'InfluxDB'] },
+  { pattern: /resume|placement|job|career/i, technologies: ['NLP', 'spaCy', 'Elasticsearch', 'PostgreSQL'] },
+  { pattern: /bank|payment|crm|management|inventory/i, technologies: ['PostgreSQL', 'Redis', 'Docker', 'Chart.js'] },
+];
+
+const getRealisticTechnologies = (
+  title: string,
+  category: ProjectCategory,
+  existing: string[]
+): string[] => {
+  const tech = new Set<string>(existing);
+
+  for (const base of CATEGORY_TECH_STACKS[category] ?? []) {
+    tech.add(base);
+  }
+
+  for (const hint of TITLE_TECH_HINTS) {
+    if (hint.pattern.test(title)) {
+      for (const t of hint.technologies) tech.add(t);
+    }
+  }
+
+  const prioritized = Array.from(tech);
+  if (prioritized.length < 6) {
+    for (const fallback of CATEGORY_TECH_STACKS[category] ?? []) {
+      prioritized.push(fallback);
+      if (new Set(prioritized).size >= 6) break;
+    }
+  }
+
+  let finalTech = Array.from(new Set(prioritized));
+
+  if (category === ProjectCategory.WEB_DEV) {
+    finalTech = finalTech.filter((t) => WEB_ALLOWED_TECHS.has(t));
+    for (const fallback of CATEGORY_TECH_STACKS[ProjectCategory.WEB_DEV]) {
+      if (!finalTech.includes(fallback)) finalTech.push(fallback);
+      if (finalTech.length >= 5) break;
+    }
+    return finalTech.slice(0, 6);
+  }
+
+  if (category === ProjectCategory.FULL_STACK) {
+    finalTech = finalTech.filter((t) => FULL_STACK_ALLOWED_TECHS.has(t));
+    for (const fallback of CATEGORY_TECH_STACKS[ProjectCategory.FULL_STACK]) {
+      if (!finalTech.includes(fallback)) finalTech.push(fallback);
+      if (finalTech.length >= 6) break;
+    }
+    return finalTech.slice(0, 7);
+  }
+
+  if (category === ProjectCategory.AI_ML) {
+    finalTech = finalTech.filter((t) => AI_ML_ALLOWED_TECHS.has(t));
+    for (const fallback of CATEGORY_TECH_STACKS[ProjectCategory.AI_ML]) {
+      if (!finalTech.includes(fallback)) finalTech.push(fallback);
+      if (finalTech.length >= 6) break;
+    }
+    return finalTech.slice(0, 7);
+  }
+
+  if (category === ProjectCategory.APP_DEV) {
+    finalTech = finalTech.filter((t) => APP_DEV_ALLOWED_TECHS.has(t));
+    for (const fallback of CATEGORY_TECH_STACKS[ProjectCategory.APP_DEV]) {
+      if (!finalTech.includes(fallback)) finalTech.push(fallback);
+      if (finalTech.length >= 6) break;
+    }
+    return finalTech.slice(0, 7);
+  }
+
+  return finalTech.slice(0, 7);
+};
+
+export const projects: Project[] = baseProjects.map((project) => ({
+  ...project,
+  technologies: getRealisticTechnologies(project.title, project.category, project.technologies),
+}));
