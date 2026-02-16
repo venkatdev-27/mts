@@ -105,7 +105,7 @@ const Services: React.FC = () => {
                   <Icon className="h-6 w-6" />
                 </div>
                 <h3 className={`text-xl font-bold text-slate-900 mb-2 ${theme.title}`}>{service.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 h-[4.5em]">
+                <p className="text-slate-500 text-sm leading-relaxed md:line-clamp-3 md:h-[4.5em]">
                   {service.description}
                 </p>
               </div>
