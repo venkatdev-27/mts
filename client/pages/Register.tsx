@@ -178,8 +178,8 @@ export default function Register() {
                     {!submitted ? (
                         <>
                             <div className="text-center lg:text-left">
-                                <h2 className="text-3xl font-bold text-slate-900">Create Account</h2>
-                                <p className="mt-2 text-slate-500">Sign up to get started with your selected course.</p>
+                                <h2 className="text-3xl font-bold text-slate-900">Registration</h2>
+                                <p className="mt-2 text-slate-500">Register to get started with your selected course.</p>
                             </div>
 
                             <form onSubmit={handleSubmit} className="space-y-6 mt-8">
