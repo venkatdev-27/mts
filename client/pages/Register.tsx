@@ -330,7 +330,7 @@ export default function Register() {
                             <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <CheckCircle className="w-12 h-12 text-green-600" />
                             </div>
-                            <h3 className="text-3xl font-extrabold text-slate-900 mb-3">Welcome Aboard!</h3>
+                            <h3 className="text-3xl font-extrabold text-slate-900 mb-3">Welcome MTS!</h3>
                             <p className="text-slate-500 mb-8 max-w-xs mx-auto text-lg">Your registration was successful. We'll be in touch with you shortly.</p>
                             <button
                                 onClick={() => navigate('/')}

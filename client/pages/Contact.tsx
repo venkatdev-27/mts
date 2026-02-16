@@ -75,17 +75,14 @@ const Contact: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await Promise.all([
-        contactAPI.sendMessage(formData),
-        new Promise((resolve) => setTimeout(resolve, 2200)),
-      ]);
-      toast.success('Message sent successfully.', {
+      await contactAPI.sendMessage(formData);
+      toast.success('Message sent successfully!', {
         duration: 2500,
         position: 'top-center'
       });
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch (error) {
-      toast.error('Sorry, there was an error sending your message. \nPlease try again.', {
+      toast.error('Sorry, there was an error sending your message. Please try again.', {
         duration: 2500,
         position: 'top-center'
       });
@@ -255,8 +252,17 @@ const Contact: React.FC = () => {
                   disabled={isLoading}
                   className="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isLoading ? 'Sending... (2-3s)' : 'Send Message'}
-                  {!isLoading && <Send className="ml-2 h-5 w-5" />}
+                  {isLoading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="ml-2 h-5 w-5" />
+                    </>
+                  )}
                 </button>
               </div>
             </form>
