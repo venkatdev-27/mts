@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import { contactAPI } from '../services/api';
+import { contactAPI, courseAPI, projectAPI } from '../services/api';
 import { useLocation } from 'react-router-dom';
+import { defaultUICourses, toUICourses } from '../lib/courseHelpers';
 
 interface ProjectEnquiryState {
   title: string;
@@ -25,13 +26,44 @@ const Contact: React.FC = () => {
     message: ''
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+  const [subjectOptions, setSubjectOptions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const loadSubjectOptions = async () => {
+      const fallbackCourses = defaultUICourses.map((course) => `Course: ${course.title}`);
+      try {
+        const [courseData, projectData] = await Promise.all([
+          courseAPI.getAllCourses(),
+          projectAPI.getAllProjects(),
+        ]);
+
+        const normalizedCourses = Array.isArray(courseData) ? toUICourses(courseData).map((course) => `Course: ${course.title}`) : [];
+        const rawProjects = Array.isArray(projectData)
+          ? projectData
+          : Array.isArray(projectData?.projects)
+            ? projectData.projects
+            : [];
+        const normalizedProjects = rawProjects
+          .map((project: { title?: string }) => project?.title?.trim())
+          .filter((title: string | undefined): title is string => Boolean(title))
+          .map((title: string) => `Project: ${title}`);
+
+        const options = [...normalizedCourses, ...normalizedProjects];
+        setSubjectOptions(options.length > 0 ? options : fallbackCourses);
+      } catch (error) {
+        console.error('Error loading contact subject options:', error);
+        setSubjectOptions(fallbackCourses);
+      }
+    };
+
+    loadSubjectOptions();
+  }, []);
 
   useEffect(() => {
     if (!projectEnquiry) return;
     setFormData((prev) => ({
       ...prev,
-      subject: prev.subject || 'Project Enquiry',
+      subject: prev.subject || `Project: ${projectEnquiry.title}`,
       message:
         prev.message ||
         `Hi Team,\nI am interested in "${projectEnquiry.title}" (${projectEnquiry.category}).\nPlease share detailed plan, timeline, and pricing.\nEstimated timeline shown: ${projectEnquiry.estimatedTime}.`,
@@ -41,20 +73,20 @@ const Contact: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setSubmitStatus(null);
 
     try {
-      await contactAPI.sendMessage(formData);
-      setSubmitStatus('success');
-      toast.success('Thank you for your message! \nWe will get back to you soon.', {
-        duration: 2000,
+      await Promise.all([
+        contactAPI.sendMessage(formData),
+        new Promise((resolve) => setTimeout(resolve, 2200)),
+      ]);
+      toast.success('Message sent successfully.', {
+        duration: 2500,
         position: 'top-center'
       });
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch (error) {
-      setSubmitStatus('error');
       toast.error('Sorry, there was an error sending your message. \nPlease try again.', {
-        duration: 2000,
+        duration: 2500,
         position: 'top-center'
       });
       console.error('Error sending message:', error);
@@ -196,11 +228,12 @@ const Contact: React.FC = () => {
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 border p-3 bg-white"
                 >
-                  <option value="" disabled>Select a topic</option>
-                  <option value="Project Enquiry">Project Enquiry</option>
-                  <option value="Course Training">Course Training</option>
-                  <option value="IEEE Project">IEEE Project</option>
-                  <option value="General Query">General Query</option>
+                  <option value="" disabled>Select a course or project</option>
+                  {subjectOptions.map((subject) => (
+                    <option key={subject} value={subject}>
+                      {subject}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="col-span-2">
@@ -222,7 +255,7 @@ const Contact: React.FC = () => {
                   disabled={isLoading}
                   className="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isLoading ? 'Sending...' : 'Send Message'}
+                  {isLoading ? 'Sending... (2-3s)' : 'Send Message'}
                   {!isLoading && <Send className="ml-2 h-5 w-5" />}
                 </button>
               </div>

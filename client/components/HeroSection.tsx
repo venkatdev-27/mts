@@ -83,7 +83,7 @@ export default function Hero() {
           <motion.div variants={fadeIn} className="grid grid-cols-3 gap-12 pt-12 border-t border-white/10 w-full max-w-3xl mx-auto">
             <div className="flex flex-col">
               <div className="flex justify-center items-center gap-2 text-4xl font-bold text-white">
-                30k+
+                3k+
               </div>
               <span className="text-sm text-gray-500 font-medium uppercase tracking-wide">Enrollments</span>
             </div>
@@ -95,9 +95,9 @@ export default function Hero() {
             </div>
             <div className="flex flex-col">
               <div className="flex justify-center items-center gap-2 text-4xl font-bold text-white">
-                15
+                45+
               </div>
-              <span className="text-sm text-gray-500 font-medium uppercase tracking-wide">Courses</span>
+              <span className="text-sm text-gray-500 font-medium uppercase tracking-wide">Courses& projects</span>
             </div>
           </motion.div>
         </motion.div>
