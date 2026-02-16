@@ -7,18 +7,18 @@ import { courseAPI } from '../services/api';
 import { defaultUICourses, toUICourses } from '../lib/courseHelpers';
 
 const REGISTER_TESTIMONIALS = [
-    { initial: 'A', name: 'Akhil Reddy', role: 'MERN Developer @ NovaTech', content: 'The MERN course gave me production-level confidence. I built real modules and cracked interviews quickly.' },
-    { initial: 'P', name: 'Priya N', role: 'Frontend Engineer @ PixelLabs', content: 'React learning was structured and practical. Every sprint improved my UI skills and code quality.' },
-    { initial: 'R', name: 'Rahul K', role: 'Backend Engineer @ CodeGrid', content: 'Java backend sessions were direct and strong. I understood API design, validation, and service architecture clearly.' },
-    { initial: 'S', name: 'Sneha M', role: 'Data Analyst @ InsightCore', content: 'Power BI and Tableau modules were very practical. I can now create dashboards that teams actually use.' },
-    { initial: 'V', name: 'Vikas T', role: 'Python Developer @ NextByte', content: 'Python full stack training covered end-to-end flow. From database to deployment, everything was hands-on.' },
-    { initial: 'H', name: 'Harini P', role: 'AI Engineer @ DeepVision', content: 'AI/ML classes focused on real datasets and evaluation. I finally learned how models are built and deployed.' },
-    { initial: 'K', name: 'Kiran Y', role: 'Mobile App Developer @ AppOrbit', content: 'App development track improved my architecture thinking. I shipped features with cleaner code and better UX.' },
-    { initial: 'D', name: 'Divya S', role: 'Software Trainee @ ZenithSoft', content: 'The web developer bootcamp was clear and fast-paced. It helped me build a strong portfolio for placements.' },
-    { initial: 'N', name: 'Naveen C', role: 'Full Stack Intern @ BrightLabs', content: 'Mentor reviews were the biggest value for me. I learned how to write maintainable code under real constraints.' },
-    { initial: 'L', name: 'Likitha G', role: 'Data Science Associate @ AlphaData', content: 'Data science modules improved my analysis workflow. EDA, model basics, and storytelling were explained well.' },
-    { initial: 'M', name: 'Manoj B', role: 'Software Engineer @ InfiniTech', content: 'The curriculum is placement-oriented and disciplined. Weekly checkpoints kept me consistent and job-ready.' },
-    { initial: 'T', name: 'Tejaswini R', role: 'Junior Developer @ CloudNest', content: 'I joined with basic coding knowledge and left with confidence to handle complete project tasks independently.' },
+    { initial: 'A', name: 'Ananya Sharma', role: 'MERN Developer @ TechNova', content: 'The MERN course gave me production-level confidence. I built real modules and cracked interviews quickly.' },
+    { initial: 'P', name: 'Pranav Rao', role: 'Frontend Engineer @ PixelWorks', content: 'React learning was structured and practical. Every sprint improved my UI skills and code quality.' },
+    { initial: 'R', name: 'Rohit Menon', role: 'Backend Engineer @ CodeCraft', content: 'Java backend sessions were direct and strong. I understood API design, validation, and service architecture clearly.' },
+    { initial: 'S', name: 'Sunita Patel', role: 'Data Analyst @ DataInsight', content: 'Power BI and Tableau modules were very practical. I can now create dashboards that teams actually use.' },
+    { initial: 'V', name: 'Vivek Iyer', role: 'Python Developer @ ByteWorks', content: 'Python full stack training covered end-to-end flow. From database to deployment, everything was hands-on.' },
+    { initial: 'H', name: 'Hema Nair', role: 'AI Engineer @ DeepLogic', content: 'AI/ML classes focused on real datasets and evaluation. I finally learned how models are built and deployed.' },
+    { initial: 'K', name: 'Karthik Srinivasan', role: 'Mobile App Developer @ AppGenius', content: 'App development track improved my architecture thinking. I shipped features with cleaner code and better UX.' },
+    { initial: 'D', name: 'Deepika Reddy', role: 'Software Trainee @ TechZen', content: 'The web developer bootcamp was clear and fast-paced. It helped me build a strong portfolio for placements.' },
+    { initial: 'N', name: 'Nikhil Gupta', role: 'Full Stack Intern @ BrightCode', content: 'Mentor reviews were the biggest value for me. I learned how to write maintainable code under real constraints.' },
+    { initial: 'L', name: 'Lakshmi Venkat', role: 'Data Science Associate @ Analytix', content: 'Data science modules improved my analysis workflow. EDA, model basics, and storytelling were explained well.' },
+    { initial: 'M', name: 'Manish Desai', role: 'Software Engineer @ InnoTech', content: 'The curriculum is placement-oriented and disciplined. Weekly checkpoints kept me consistent and job-ready.' },
+    { initial: 'T', name: 'Tanvi Joshi', role: 'Junior Developer @ CloudFlow', content: 'I joined with basic coding knowledge and left with confidence to handle complete project tasks independently.' },
 ];
 
 export default function Register() {
@@ -199,7 +199,7 @@ export default function Register() {
                                                 onFocus={() => setFocusedField('firstName')}
                                                 onBlur={() => setFocusedField(null)}
                                                 className={`w-full pl-10 pr-4 py-3 bg-white border ${focusedField === 'firstName' ? 'border-primary-500 ring-4 ring-primary-500/10' : 'border-slate-200'} rounded-xl focus:outline-none transition-all placeholder:text-slate-300 text-slate-900 font-medium`}
-                                                placeholder="John"
+                                                placeholder="First name"
                                             />
                                         </div>
                                     </div>
@@ -218,7 +218,7 @@ export default function Register() {
                                                 onFocus={() => setFocusedField('lastName')}
                                                 onBlur={() => setFocusedField(null)}
                                                 className={`w-full pl-10 pr-4 py-3 bg-white border ${focusedField === 'lastName' ? 'border-primary-500 ring-4 ring-primary-500/10' : 'border-slate-200'} rounded-xl focus:outline-none transition-all placeholder:text-slate-300 text-slate-900 font-medium`}
-                                                placeholder="Doe"
+                                                placeholder="Last name"
                                             />
                                         </div>
                                     </div>
@@ -239,7 +239,7 @@ export default function Register() {
                                             onFocus={() => setFocusedField('email')}
                                             onBlur={() => setFocusedField(null)}
                                             className={`w-full pl-10 pr-4 py-3 bg-white border ${focusedField === 'email' ? 'border-primary-500 ring-4 ring-primary-500/10' : 'border-slate-200'} rounded-xl focus:outline-none transition-all placeholder:text-slate-300 text-slate-900 font-medium`}
-                                            placeholder="john@example.com"
+                                            placeholder="Enter email address"
                                         />
                                     </div>
                                 </div>
@@ -259,7 +259,7 @@ export default function Register() {
                                             onFocus={() => setFocusedField('mobile')}
                                             onBlur={() => setFocusedField(null)}
                                             className={`w-full pl-10 pr-4 py-3 bg-white border ${focusedField === 'mobile' ? 'border-primary-500 ring-4 ring-primary-500/10' : 'border-slate-200'} rounded-xl focus:outline-none transition-all placeholder:text-slate-300 text-slate-900 font-medium`}
-                                            placeholder="9999999999"
+                                            placeholder="Enter phone number"
                                         />
                                     </div>
                                 </div>

@@ -36,37 +36,6 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-bold mb-6 text-white">Quick Links</h3>
-            <ul className="space-y-3">
-              <li>
-                <Link to="/" className="text-slate-400 hover:text-primary-400 text-sm transition-colors flex items-center">
-                  <span className="w-1.5 h-1.5 bg-primary-600 rounded-full mr-2"></span> Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="text-slate-400 hover:text-primary-400 text-sm transition-colors flex items-center">
-                  <span className="w-1.5 h-1.5 bg-primary-600 rounded-full mr-2"></span> About Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="text-slate-400 hover:text-primary-400 text-sm transition-colors flex items-center">
-                  <span className="w-1.5 h-1.5 bg-primary-600 rounded-full mr-2"></span> Services
-                </Link>
-              </li>
-              <li>
-                <Link to="/courses" className="text-slate-400 hover:text-primary-400 text-sm transition-colors flex items-center">
-                  <span className="w-1.5 h-1.5 bg-primary-600 rounded-full mr-2"></span> Courses
-                </Link>
-              </li>
-              <li>
-                <Link to="/projects" className="text-slate-400 hover:text-primary-400 text-sm transition-colors flex items-center">
-                   <span className="w-1.5 h-1.5 bg-primary-600 rounded-full mr-2"></span> Projects
-                </Link>
-              </li>
-            </ul>
-          </div>
 
           {/* Top Courses */}
           <div>
@@ -103,7 +72,7 @@ const Footer: React.FC = () => {
                 </div>
                 <span className="ml-3 text-slate-400 text-sm leading-snug">Gandhi nagar, Vijayawada, India</span>
               </li>
-              <li className="flex items-center">
+              <li   className="flex items-center">
                 <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-primary-400">
                   <Phone className="h-4 w-4" />
                 </div>

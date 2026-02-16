@@ -187,7 +187,7 @@ const Contact: React.FC = () => {
                   value={formData.name}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 border p-3"
-                  placeholder="John Doe"
+                  placeholder="Enter full name"
                 />
               </div>
               <div className="col-span-2 md:col-span-1">
@@ -200,7 +200,7 @@ const Contact: React.FC = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 border p-3"
-                  placeholder=" 9999999999"
+                  placeholder="Ener phone number"
                 />
               </div>
               <div className="col-span-2">
@@ -213,7 +213,7 @@ const Contact: React.FC = () => {
                   value={formData.email}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 border p-3"
-                  placeholder="john@example.com"
+                  placeholder="Enter email address"
                 />
               </div>
               <div className="col-span-2">
