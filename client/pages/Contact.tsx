@@ -200,7 +200,7 @@ const Contact: React.FC = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 border p-3"
-                  placeholder="+91 9876543210"
+                  placeholder=" 9999999999"
                 />
               </div>
               <div className="col-span-2">

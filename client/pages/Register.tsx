@@ -259,7 +259,7 @@ export default function Register() {
                                             onFocus={() => setFocusedField('mobile')}
                                             onBlur={() => setFocusedField(null)}
                                             className={`w-full pl-10 pr-4 py-3 bg-white border ${focusedField === 'mobile' ? 'border-primary-500 ring-4 ring-primary-500/10' : 'border-slate-200'} rounded-xl focus:outline-none transition-all placeholder:text-slate-300 text-slate-900 font-medium`}
-                                            placeholder="+91 98765 43210"
+                                            placeholder="9999999999"
                                         />
                                     </div>
                                 </div>

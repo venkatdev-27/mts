@@ -83,25 +83,22 @@ const CourseDetails: React.FC = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="relative overflow-hidden rounded-3xl border border-slate-200 shadow-sm">
+                        <div className="overflow-hidden rounded-3xl border border-slate-200 shadow-sm">
                             <img src={course.image} alt={course.title} className="w-full h-[280px] sm:h-[380px] object-cover" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent" />
-                            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-                                <div className="flex flex-wrap gap-2 mb-3">
-                                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-white text-slate-800">{course.category}</span>
-                                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-teal-400 text-slate-900">{course.level}</span>
-                                </div>
-                                <h1 className="text-2xl sm:text-4xl font-extrabold text-white leading-tight">{course.title}</h1>
-                                <p className="mt-3 text-slate-200 text-sm sm:text-base max-w-3xl">{course.summary}</p>
-                            </div>
                         </div>
 
                         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
+                            <div className="flex flex-wrap gap-2 mb-4">
+                                <span className="px-3 py-1 rounded-full text-xs font-bold bg-primary-100 text-primary-700">{course.category}</span>
+                                <span className="px-3 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-700">{course.level}</span>
+                            </div>
+                            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 mb-3">{course.title}</h1>
+                            <p className="text-slate-600 mb-6">{course.summary}</p>
+                            
                             <div className="flex items-center gap-2 mb-4">
                                 <BookOpen className="w-5 h-5 text-primary-600" />
                                 <h2 className="text-2xl font-extrabold text-slate-900">Course Overview</h2>
                             </div>
-                            <p className="text-slate-600 mb-6">Real course summary based on this syllabus.</p>
                             <div className="rounded-xl border border-slate-100 bg-slate-50 p-5 sm:p-6">
                                 <p className="max-w-[350px] sm:max-w-none mx-auto sm:mx-0 text-sm sm:text-base text-slate-700 leading-relaxed line-clamp-[15] sm:line-clamp-none">
                                     {course.overviewParagraph}
