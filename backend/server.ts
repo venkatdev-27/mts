@@ -40,26 +40,36 @@ const localOrigins = [
     "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:3000",
+];
+
+const defaultProductionOrigins = [
+    "https://maruthitechsolutions.onrender.com",
+    "https://mts-admin-frontend.onrender.com",
+    "https://mts-client.onrender.com",
+    "https://mts-admin.onrender.com",
 ].map((origin) => normalizeOrigin(origin));
 
 const allowedOrigins = Array.from(new Set([
-    ...(process.env.NODE_ENV === "production" ? [] : localOrigins),
+    ...(process.env.NODE_ENV === "production" ? defaultProductionOrigins : localOrigins),
     ...envOrigins,
 ]));
 
-app.use(
-    cors({
-        origin: (origin, callback) => {
-            if (!origin) return callback(null, true);
-            const normalizedOrigin = normalizeOrigin(origin);
-            if (allowedOrigins.includes(normalizedOrigin)) return callback(null, true);
-            return callback(new Error("Not allowed by CORS"));
-        },
-        credentials: true,
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-        allowedHeaders: ["Content-Type", "Authorization"],
-    })
-);
+const corsOptions = {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+        if (!origin) return callback(null, true);
+        const normalizedOrigin = normalizeOrigin(origin);
+        if (allowedOrigins.includes(normalizedOrigin)) return callback(null, true);
+        console.warn(`CORS blocked origin: ${normalizedOrigin}`);
+        return callback(null, false);
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(compression());
 app.use(express.json({ limit: "10mb" }));
