@@ -314,7 +314,7 @@ export default function Register() {
                                         <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                                     ) : (
                                         <>
-                                            Complete Registration
+                                            Register
                                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                         </>
                                     )}
