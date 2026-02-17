@@ -66,9 +66,11 @@ export const toUICourses = (apiCourses: any[]): UICourse[] => {
       summary: String(raw?.summary ?? buildFallbackSummary(title)),
       skills: Array.isArray(raw?.skills) && raw.skills.length > 0
         ? raw.skills
+        : Array.isArray(raw?.topSkills) && raw.topSkills.length > 0
+          ? raw.topSkills
         : fallbackSkillsByCategory[category],
       overviewParagraph: String(
-        raw?.overviewParagraph ?? buildFallbackOverview(title)
+        raw?.overviewParagraph ?? raw?.overview ?? buildFallbackOverview(title)
       ),
     };
   });

@@ -15,6 +15,8 @@ interface Course {
     rating: number;
     students: number;
     duration: string;
+    skills: string[];
+    overviewParagraph: string;
 }
 
 const Courses: React.FC = () => {
@@ -33,7 +35,9 @@ const Courses: React.FC = () => {
         author: '',
         rating: 4.5,
         students: 0,
-        duration: ''
+        duration: '',
+        skills: [] as string[],
+        overviewParagraph: ''
     });
 
     const fetchCourses = async () => {
@@ -55,11 +59,19 @@ const Courses: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            const payload = {
+                ...formData,
+                skills: formData.skills
+                    .map((skill) => skill.trim())
+                    .filter((skill) => skill.length > 0),
+                overviewParagraph: formData.overviewParagraph.trim(),
+            };
+
             if (editingCourse) {
-                await api.put(`/courses/${editingCourse._id}`, formData);
+                await api.put(`/courses/${editingCourse._id}`, payload);
                 toast.success("Course updated successfully");
             } else {
-                await api.post('/courses', formData);
+                await api.post('/courses', payload);
                 toast.success("Course created successfully");
             }
             fetchCourses();
@@ -96,7 +108,9 @@ const Courses: React.FC = () => {
             author: course.author,
             rating: course.rating,
             students: course.students,
-            duration: course.duration
+            duration: course.duration,
+            skills: course.skills || [],
+            overviewParagraph: course.overviewParagraph || ''
         });
         setIsModalOpen(true);
     };
@@ -113,7 +127,9 @@ const Courses: React.FC = () => {
             author: '',
             rating: 4.5,
             students: 0,
-            duration: ''
+            duration: '',
+            skills: [],
+            overviewParagraph: ''
         });
     };
 
@@ -225,6 +241,31 @@ const Courses: React.FC = () => {
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Image URL</label>
                                     <input type="text" required value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" placeholder="https://..." />
+                                </div>
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Top Skills (comma separated)</label>
+                                    <input
+                                        type="text"
+                                        value={formData.skills.join(', ')}
+                                        onChange={e =>
+                                            setFormData({
+                                                ...formData,
+                                                skills: e.target.value.split(',').map((skill) => skill.trim()).filter(Boolean),
+                                            })
+                                        }
+                                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
+                                        placeholder="React, Node.js, MongoDB"
+                                    />
+                                </div>
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Course Overview</label>
+                                    <textarea
+                                        rows={5}
+                                        value={formData.overviewParagraph}
+                                        onChange={e => setFormData({ ...formData, overviewParagraph: e.target.value })}
+                                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
+                                        placeholder="Describe what students will learn in this course..."
+                                    />
                                 </div>
                             </div>
 

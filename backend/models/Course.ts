@@ -11,6 +11,8 @@ export interface ICourse extends Document {
     rating: number;
     students: number;
     duration: string;
+    skills: string[];
+    overviewParagraph: string;
 }
 
 const courseSchema: Schema = new Schema({
@@ -32,6 +34,14 @@ const courseSchema: Schema = new Schema({
     rating: { type: Number, default: 0 },
     students: { type: Number, default: 0 },
     duration: { type: String, required: true },
+    skills: {
+        type: [String],
+        default: [],
+    },
+    overviewParagraph: {
+        type: String,
+        default: "",
+    },
 }, { timestamps: true });
 
 export default mongoose.model<ICourse>("Course", courseSchema);
