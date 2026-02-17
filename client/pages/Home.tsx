@@ -244,6 +244,9 @@ const Home: React.FC = () => {
                         <div className="flex items-baseline gap-1">
                           <span className="text-xl font-extrabold text-slate-900">₹{course.discountedPrice.toLocaleString()}</span>
                         </div>
+                        <span className="text-xs text-red-600 font-bold mt-1">
+                          {Math.round(((course.price - course.discountedPrice) / course.price) * 100)}% OFF
+                        </span>
                       </div>
                       <button
                         onClick={() => navigate('/register', { state: { course: course.title } })}
