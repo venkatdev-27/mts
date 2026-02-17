@@ -41,10 +41,10 @@ export function SkillsCloud() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <div className="mb-10">
                     <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                        What skills you will build
+                        Technologies You Will Master
                     </h3>
-                    <p className="mt-2 text-slate-500 max-w-2xl mx-auto">
-                        Master the modern technology stack used by top companies worldwide.
+                    <p className="mt-4 text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
+                        Go beyond the basics with a curriculum designed for modern engineering. Gain hands-on proficiency in the industry's most in-demand languages and frameworks, ensuring you possess the production-ready skills to build scalable, high-performance applications.
                     </p>
                 </div>
 

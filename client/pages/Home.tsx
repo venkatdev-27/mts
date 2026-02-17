@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
 import HeroSection from '../components/HeroSection';
-import Testimonials from '../components/Testimonials';
 import { services } from '../data/services';
 import {
   BookOpen,
@@ -19,18 +18,21 @@ import {
   MessageCircle,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import StatsCounter from '../components/StatsCounter';
 import { courseAPI, projectAPI } from '../services/api';
 import { Project } from '../types';
 import { ProjectCard } from '../components/ProjectCard';
 import { defaultUICourses, toUICourses, UICourse } from '../lib/courseHelpers';
-import { SkillsCloud } from '../components/SkillsCloud';
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from '@/components/animate-ui/components/radix/accordion';
+
+// Lazy loaded components
+const Testimonials = lazy(() => import('../components/Testimonials'));
+const StatsCounter = lazy(() => import('../components/StatsCounter'));
+const SkillsCloud = lazy(() => import('../components/SkillsCloud').then(module => ({ default: module.SkillsCloud })));
 
 const ACCORDION_ITEMS = [
   {
@@ -138,10 +140,32 @@ const Home: React.FC = () => {
     const fetchFeaturedProjects = async () => {
       try {
         const data = await projectAPI.getAllProjects();
-        if (Array.isArray(data)) {
-          setFeaturedProjects(data.slice(0, 6));
-        } else if (data?.projects && Array.isArray(data.projects)) {
-          setFeaturedProjects(data.projects.slice(0, 6));
+        const allProjects = Array.isArray(data) ? data : (data?.projects || []);
+
+        if (allProjects.length > 0) {
+          const categories = ['Full Stack', 'App Development', 'Web Development', 'AI & Machine Learning'];
+          const selectedProjects: Project[] = [];
+          const seenIds = new Set<string>();
+
+          // Priority 1: Pick one unique project from each main category
+          categories.forEach((cat) => {
+            const proj = allProjects.find((p: Project) => p.category === cat && !seenIds.has(p.id));
+            if (proj) {
+              selectedProjects.push(proj);
+              seenIds.add(proj.id);
+            }
+          });
+
+          // Priority 2: Fill the rest up to 5 projects
+          for (const proj of allProjects) {
+            if (selectedProjects.length >= 5) break;
+            if (!seenIds.has(proj.id)) {
+              selectedProjects.push(proj);
+              seenIds.add(proj.id);
+            }
+          }
+
+          setFeaturedProjects(selectedProjects);
         }
       } catch (error) {
         console.error('Error loading home projects:', error);
@@ -304,7 +328,7 @@ const Home: React.FC = () => {
                       </div>
                       <button
                         onClick={() => navigate('/register', { state: { course: course.title } })}
-                        className="h-10 px-4 rounded-xl bg-slate-50 text-slate-900 flex items-center justify-center group-hover:bg-primary-600 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md hover:scale-105 active:scale-95 font-bold text-sm gap-2"
+                        className="h-10 px-6 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 text-white md:bg-none md:bg-slate-50 md:text-slate-900 flex items-center justify-center md:group-hover:bg-primary-600 md:group-hover:text-white transition-all duration-300 shadow-lg shadow-primary-500/30 md:shadow-sm md:group-hover:shadow-md hover:scale-105 active:scale-95 font-bold text-sm gap-2"
                       >
                         <span>Enroll</span>
                         <ArrowRight className="w-4 h-4" />
@@ -436,7 +460,9 @@ const Home: React.FC = () => {
       </section>
 
       {/* Skills Cloud Section */}
-      <SkillsCloud />
+      <Suspense fallback={<div className="h-96 flex items-center justify-center bg-slate-50"><div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin"></div></div>}>
+        <SkillsCloud />
+      </Suspense>
 
       {/* Accordion Section */}
       <section className="py-16 sm:py-20 bg-slate-50 border-t border-slate-100">
@@ -463,7 +489,9 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <Testimonials />
+      <Suspense fallback={<div className="h-96 bg-white"></div>}>
+        <Testimonials />
+      </Suspense>
 
       <section className="py-16 sm:py-24 bg-white border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -478,7 +506,9 @@ const Home: React.FC = () => {
               We take pride in the numbers that define our journey. From guiding students to placing them in top companies, our results speak for themselves.
             </p>
 
-            <StatsCounter />
+            <Suspense fallback={<div className="h-32"></div>}>
+              <StatsCounter />
+            </Suspense>
           </div>
         </div>
       </section>

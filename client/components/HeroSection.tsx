@@ -1,3 +1,4 @@
+import React, { memo } from "react";
 import { motion, Variants } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Play } from "lucide-react";
@@ -15,7 +16,7 @@ export function AnimatedBadgeDemo() {
   );
 }
 
-export default function Hero() {
+function Hero() {
 
   const educationCapUrl = `${import.meta.env.BASE_URL}models/edu.png`;
 
@@ -122,3 +123,5 @@ export default function Hero() {
     </section>
   );
 }
+
+export default memo(Hero);

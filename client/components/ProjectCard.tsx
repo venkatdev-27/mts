@@ -75,10 +75,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         </div>
 
         {/* Footer Button - Compact */}
-        <div className="pt-3 mt-1 border-t border-slate-50">
+        <div className="pt-3 mt-1 border-t border-slate-50 flex justify-center">
           <Link
             to={`/projects/${project.id}`}
-            className="w-full flex items-center justify-center px-3 py-2 bg-slate-50 text-slate-700 rounded-lg text-xs font-bold hover:bg-primary-600 hover:text-white transition-all duration-300 group-hover:shadow-md"
+            className="inline-flex items-center justify-center h-8 px-6 bg-gradient-to-r from-primary-600 to-primary-700 text-white md:bg-none md:bg-slate-50 md:text-slate-700 rounded-full text-xs font-bold md:hover:bg-primary-600 md:hover:text-white transition-all duration-300 shadow-lg shadow-primary-500/30 md:shadow-none md:hover:shadow-md active:scale-95"
           >
             View Details
             <ArrowRight className="ml-1.5 h-3 w-3" />

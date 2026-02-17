@@ -23,9 +23,21 @@ const Navbar: React.FC = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Prevent scrolling when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg py-1.5 md:py-2' : 'bg-white py-1.5 md:py-2 shadow-sm'}`}>
@@ -69,45 +81,68 @@ const Navbar: React.FC = () => {
           {/* Mobile menu button */}
           <div className="flex items-center md:hidden">
             <button
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => setIsOpen(true)}
               className="inline-flex items-center justify-center p-2 rounded-lg text-slate-600 hover:text-primary-600 hover:bg-primary-50 focus:outline-none transition-colors"
+              aria-label="Open main menu"
             >
-              <span className="sr-only">Open main menu</span>
-              {isOpen ? <X className="block h-6 w-6" /> : <Menu className="block h-6 w-6" />}
+              <Menu className="block h-6 w-6" />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <div className={`md:hidden absolute top-full left-0 w-full bg-white border-b border-slate-100 shadow-xl transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-2 invisible'}`}>
-        <div className="px-4 pt-2 pb-6 flex flex-col h-full bg-white">
-          <div className="space-y-1 mb-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-medium transition-all duration-200 ${isActive(link.path)
-                  ? 'text-primary-700 bg-primary-50 border border-primary-100'
-                  : 'text-slate-600 hover:text-primary-600 hover:bg-slate-50'
-                  }`}
-              >
-                {link.name}
-                {isActive(link.path) && <div className="w-1.5 h-1.5 rounded-full bg-primary-600"></div>}
-              </Link>
-            ))}
-          </div>
+      {/* Mobile Drawer Menu */}
+      <div className={`fixed inset-0 z-50 md:hidden transition-all duration-500 ease-in-out ${isOpen ? 'visible' : 'invisible'}`}>
+        {/* Backdrop */}
+        <div
+          className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+          onClick={() => setIsOpen(false)}
+        />
 
-          <div className="mt-auto px-1 pb-2">
-            <Link
-              to="/register"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center w-full px-4 py-4 text-base font-bold text-white bg-primary-600 hover:bg-primary-700 rounded-xl shadow-lg shadow-primary-500/30 transition-all active:scale-[0.98]"
-            >
-              Get Started
-              <ChevronRight className="ml-2 h-5 w-5 opacity-90" />
-            </Link>
+        {/* Drawer */}
+        <div className={`absolute top-0 right-0 h-auto w-[80%] max-w-sm bg-white shadow-2xl rounded-bl-2xl transform transition-transform duration-500 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className="flex flex-col p-6">
+            {/* Header with Close Button */}
+            <div className="flex justify-between items-center mb-8">
+              <span className="text-lg font-bold text-slate-900">Menu</span>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-2 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors"
+                aria-label="Close menu"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Links */}
+            <div className="space-y-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 ${isActive(link.path)
+                    ? 'text-primary-700 bg-primary-50 border border-primary-100'
+                    : 'text-slate-600 hover:text-primary-600 hover:bg-slate-50'
+                    }`}
+                >
+                  {link.name}
+                  {isActive(link.path) && <div className="w-1.5 h-1.5 rounded-full bg-primary-600"></div>}
+                </Link>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <div className="mt-6 pt-6 border-t border-slate-100">
+              <Link
+                to="/register"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-center w-full px-4 py-3.5 text-base font-bold text-white bg-primary-600 hover:bg-primary-700 rounded-xl shadow-lg shadow-primary-500/30 transition-all active:scale-[0.98]"
+              >
+                Get Started
+                <ChevronRight className="ml-2 h-5 w-5 opacity-90" />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
