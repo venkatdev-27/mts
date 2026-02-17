@@ -16,6 +16,7 @@ import {
   FileText,
   Layers,
   HelpCircle,
+  MessageCircle,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import StatsCounter from '../components/StatsCounter';
@@ -53,6 +54,13 @@ const Home: React.FC = () => {
   const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
   const [homeCourses, setHomeCourses] = useState<UICourse[]>(defaultUICourses);
   const [serviceHoverThemeById, setServiceHoverThemeById] = useState<Record<string, number>>({});
+  const [showIntroVideo, setShowIntroVideo] = useState<boolean>(true);
+  const [isWhatsappImageError, setIsWhatsappImageError] = useState(false);
+  const introVideoUrl = `${import.meta.env.BASE_URL}models/ai.mp4`;
+  const whatsappLogoUrl = `${import.meta.env.BASE_URL}models/wp.png`;
+  const whatsappMessage = encodeURIComponent(
+    'Hello Maruthi Tech Solutions team, I am interested in your training programs. Please share complete details about available courses, duration, fees, upcoming batches, demo class availability, certification, and placement support.',
+  );
 
   const serviceHoverThemes = [
     {
@@ -139,8 +147,38 @@ const Home: React.FC = () => {
     fetchCourses();
   }, []);
 
+  useEffect(() => {
+    if (!showIntroVideo) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [showIntroVideo]);
+
+  const closeIntroVideo = () => {
+    setShowIntroVideo(false);
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
+      {showIntroVideo && (
+        <div className="fixed inset-0 z-[120] bg-black flex items-center justify-center">
+          <video
+            className="w-full h-full object-contain md:object-cover"
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            onEnded={closeIntroVideo}
+            onError={closeIntroVideo}
+          >
+            <source src={introVideoUrl} type="video/mp4" />
+            <source src="/models/ai.mp4" type="video/mp4" />
+          </video>
+        </div>
+      )}
+
       <HeroSection />
 
       {/* Courses Section */}
@@ -263,8 +301,17 @@ const Home: React.FC = () => {
           </div>
 
           <div className="text-center md:hidden">
-            <Link to="/courses" className="inline-flex items-center justify-center w-full px-6 py-3.5 bg-white border border-slate-200 rounded-xl text-slate-700 font-bold hover:bg-slate-50 hover:text-primary-600 transition-colors shadow-sm">
-              Explore All Courses
+            <Link
+              to="/courses"
+              className="inline-flex items-center justify-between w-[92%] mx-auto px-4 py-3 rounded-full text-white font-extrabold transition-all shadow-[0_14px_30px_-18px_rgba(15,23,42,0.9)] bg-gradient-to-r from-[#03163E] via-[#2B177A] to-[#8B2CF5] hover:brightness-110 active:scale-[0.98]"
+            >
+              <span className="inline-flex items-center gap-2 text-base">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/12 border border-white/20">
+                  <BookOpen className="w-4 h-4" />
+                </span>
+                Explore All Courses
+              </span>
+              <ArrowRight className="w-5 h-5 shrink-0" />
             </Link>
           </div>
         </div>
@@ -350,7 +397,22 @@ const Home: React.FC = () => {
           </div>
 
           <div className="mt-12 sm:mt-16 text-center">
-            <Link to="/services" className="inline-flex items-center text-slate-700 font-bold hover:text-primary-600 transition-colors bg-white border border-slate-200 px-6 py-3 rounded-xl shadow-sm hover:shadow-md">
+            <Link
+              to="/services"
+              className="inline-flex md:hidden items-center justify-between w-[92%] mx-auto px-4 py-3 rounded-full text-white font-extrabold transition-all shadow-[0_14px_30px_-18px_rgba(5,150,105,0.9)] bg-gradient-to-r from-[#064E3B] via-[#047857] to-[#22C55E] hover:brightness-110 active:scale-[0.98]"
+            >
+              <span className="inline-flex items-center gap-2 text-base">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/12 border border-white/20">
+                  <Layers className="w-4 h-4" />
+                </span>
+                View All Services
+              </span>
+              <ArrowRight className="w-5 h-5 shrink-0" />
+            </Link>
+            <Link
+              to="/services"
+              className="hidden md:inline-flex items-center text-slate-700 font-bold hover:text-primary-600 transition-colors bg-white border border-slate-200 px-6 py-3 rounded-xl shadow-sm hover:shadow-md"
+            >
               View All Services <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
@@ -401,6 +463,27 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
+      <a
+        href={`https://wa.me/6309616945?text=${whatsappMessage}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp"
+        className="fixed right-4 bottom-4 sm:right-6 sm:bottom-6 z-[130] w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+      >
+        {isWhatsappImageError ? (
+          <span className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-emerald-500 flex items-center justify-center drop-shadow-[0_8px_18px_rgba(34,197,94,0.45)]">
+            <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+          </span>
+        ) : (
+          <img
+            src={whatsappLogoUrl}
+            alt="WhatsApp"
+            className="w-11 h-11 sm:w-12 sm:h-12 rounded-full object-cover drop-shadow-[0_8px_18px_rgba(34,197,94,0.45)]"
+            onError={() => setIsWhatsappImageError(true)}
+          />
+        )}
+      </a>
     </div>
   );
 };

@@ -16,6 +16,7 @@ export function AnimatedBadgeDemo() {
 
 export default function Hero() {
 
+  const educationCapUrl = `${import.meta.env.BASE_URL}models/edu.png`;
   
   const fadeIn: Variants = {
     hidden: { opacity: 0, y: 20 },
@@ -56,7 +57,15 @@ export default function Hero() {
 
           {/* Heading */}
           <motion.h1 variants={fadeIn} className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight text-white/90">
-            Build Real Skills. <br className="hidden md:block" />
+            <span className="relative inline-block">
+              <img
+                src={educationCapUrl}
+                alt="Education cap"
+                className="absolute -left-4 -top-4 md:-left-6 md:-top-6 w-12 h-12 md:w-16 md:h-16 object-contain pointer-events-none select-none"
+              />
+              Build
+            </span>{' '}
+            Real Skills. <br className="hidden md:block" />
             Get <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-300 drop-shadow-[0_0_10px_rgba(45,212,191,0.2)]">Career-Ready</span> Fast.
           </motion.h1>
 
