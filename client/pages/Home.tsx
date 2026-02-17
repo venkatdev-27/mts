@@ -24,6 +24,7 @@ import { courseAPI, projectAPI } from '../services/api';
 import { Project } from '../types';
 import { ProjectCard } from '../components/ProjectCard';
 import { defaultUICourses, toUICourses, UICourse } from '../lib/courseHelpers';
+import { SkillsCloud } from '../components/SkillsCloud';
 import {
   Accordion,
   AccordionItem,
@@ -433,6 +434,9 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Skills Cloud Section */}
+      <SkillsCloud />
 
       {/* Accordion Section */}
       <section className="py-16 sm:py-20 bg-slate-50 border-t border-slate-100">

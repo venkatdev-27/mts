@@ -2,6 +2,7 @@ import { motion, Variants } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Play } from "lucide-react";
 import AnimatedBadge from "@/registry/eldoraui/animated-badge";
+import { AnimatedShinyButton } from "./ui/animated-shiny-button";
 
 export function AnimatedBadgeDemo() {
   return (
@@ -17,7 +18,7 @@ export function AnimatedBadgeDemo() {
 export default function Hero() {
 
   const educationCapUrl = `${import.meta.env.BASE_URL}models/edu.png`;
-  
+
   const fadeIn: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
@@ -61,9 +62,9 @@ export default function Hero() {
               <img
                 src={educationCapUrl}
                 alt="Education cap"
-                className="absolute -left-4 -top-4 md:-left-6 md:-top-6 w-12 h-12 md:w-16 md:h-16 object-contain pointer-events-none select-none"
+                className="absolute -left-6 -top-4 md:-left-8 md:-top-6 w-12 h-12 md:w-16 md:h-16 object-contain pointer-events-none select-none z-0"
               />
-              Build
+              <span className="relative z-10">Build</span>
             </span>{' '}
             Real Skills. <br className="hidden md:block" />
             Get <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-300 drop-shadow-[0_0_10px_rgba(45,212,191,0.2)]">Career-Ready</span> Fast.
@@ -77,13 +78,19 @@ export default function Hero() {
 
           {/* Buttons */}
           <motion.div variants={fadeIn} className="flex flex-wrap gap-4 pt-4 justify-center">
-            <Link
-              to="/register"
-              className="group relative px-8 py-3.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-xl font-bold text-[#022c44] shadow-lg shadow-cyan-500/20 hover:from-teal-400 hover:to-cyan-400 hover:shadow-cyan-400/30 hover:scale-105 transition-all duration-300 flex items-center gap-2 overflow-hidden"
+            <AnimatedShinyButton
+              url="/register"
+              className="px-8 py-3.5 rounded-xl font-bold text-[#022c44] shadow-lg shadow-cyan-500/20 transition-all duration-300 flex items-center gap-2 overflow-hidden"
+              style={{
+                "--shiny-cta-bg": "#14b8a6",
+                "--shiny-cta-bg-subtle": "#0d9488",
+                "--shiny-cta-fg": "#022c44",
+                "--shiny-cta-highlight": "#ffffff",
+                "--shiny-cta-highlight-subtle": "#f1f5f9",
+              } as React.CSSProperties}
             >
               <span className="relative z-10">Get Started</span>
-              <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </AnimatedShinyButton>
 
 
           </motion.div>

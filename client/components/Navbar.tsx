@@ -30,14 +30,14 @@ const Navbar: React.FC = () => {
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg py-1.5 md:py-2' : 'bg-white py-1.5 md:py-2 shadow-sm'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-[4.5rem] md:h-20">
+        <div className="flex justify-between items-center h-12 sm:h-[4.5rem] md:h-20">
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center" onClick={() => setIsOpen(false)}>
               <img
                 src="/models/logo.png"
                 alt="Maruthi Tech Solutions"
-                className="h-[4.2rem] w-auto sm:h-[5rem] md:h-[6rem] object-contain"
+                className="h-11 w-auto sm:h-[5rem] md:h-[6rem] object-contain"
               />
             </Link>
           </div>
