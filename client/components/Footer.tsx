@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
               <img
                 src="/models/logo.png"
                 alt="Maruthi Tech Solutions"
-                className="h-[4.2rem] w-auto sm:h-[5rem] md:h-[6rem] object-contain"
+                className="h-[5.5rem] w-auto sm:h-[6.5rem] md:h-[8rem] object-contain"
               />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
@@ -82,7 +82,7 @@ const Footer: React.FC = () => {
                 <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-primary-400">
                   <Mail className="h-4 w-4" />
                 </div>
-                <span className="ml-3 text-slate-400 text-sm">info.maruthitechsolutions.com</span>
+                <span className="ml-3 text-slate-400 text-sm">info.maruthitechsolutions@gmail.com</span>
               </li>
             </ul>
           </div>

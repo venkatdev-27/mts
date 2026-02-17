@@ -144,7 +144,7 @@ const Contact: React.FC = () => {
                   <h4 className="text-base font-medium text-gray-900">Our Office</h4>
                   <p className="mt-1 text-gray-500">
                     Gandhi nagar,vijayawada,520012<br />
-                    <br />
+                    
                     andhra pradesh, India
                   </p>
                 </div>
@@ -160,7 +160,7 @@ const Contact: React.FC = () => {
                 <Mail className="h-6 w-6 text-primary-600" />
                 <div className="ml-4">
                   <h4 className="text-base font-medium text-gray-900">Email</h4>
-                  <p className="mt-1 text-gray-500">info.maruthitechsolutions.com</p>
+                  <p className="mt-1 text-gray-500">info.maruthitechsolutions@gmail.com</p>
                 </div>
               </div>
             </div>

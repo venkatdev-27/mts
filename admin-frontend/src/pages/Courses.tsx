@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api/axios';
-import { Plus, Edit2, Trash2, Search, X } from 'lucide-react';
+import { Plus, Edit2, Trash2,  X } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 interface Course {
