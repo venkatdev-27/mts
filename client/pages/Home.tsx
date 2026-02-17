@@ -488,7 +488,7 @@ const Home: React.FC = () => {
         className="fixed right-4 bottom-4 sm:right-6 sm:bottom-6 z-[130] w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center cursor-pointer hover:scale-105 active:scale-90 transition-transform"
       >
         {isWhatsappImageError ? (
-          <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-green-500 flex items-center justify-center">
+          <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-emerald-300 flex items-center justify-center drop-shadow-[0_6px_12px_rgba(16,185,129,0.18)]">
             <MessageCircle className="w-8 h-8 sm:w-9 sm:h-9 text-white" />
           </span>
         ) : (
@@ -496,7 +496,7 @@ const Home: React.FC = () => {
             src={whatsappLogoUrl}
             alt="WhatsApp"
             loading="lazy"
-            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover"
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover brightness-90 contrast-75 saturate-55 sm:brightness-95 sm:contrast-85 sm:saturate-65 drop-shadow-[0_6px_12px_rgba(16,185,129,0.18)]"
             onError={() => setIsWhatsappImageError(true)}
           />
         )}

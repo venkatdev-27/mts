@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { services } from '../data/services';
 import { BookOpen, Code, FileText, CheckCircle, Brain, Smartphone, Cpu, Layers } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { services } from '../data/services';
 
 const Services: React.FC = () => {
   const [cardThemeById, setCardThemeById] = useState<Record<string, number>>({});
