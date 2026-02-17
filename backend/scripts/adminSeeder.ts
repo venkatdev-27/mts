@@ -1,37 +1,31 @@
-import User from '../models/User';
-import dotenv from 'dotenv';
-dotenv.config();
+import User from "../models/User";
 
-export const seedAdmin = async () => {
+export const seedAdmin = async (): Promise<void> => {
     try {
         const adminUsername = process.env.ADMIN_USERNAME;
         const adminPassword = process.env.ADMIN_PASSWORD;
 
         if (!adminUsername || !adminPassword) {
-            console.error('❌ Admin credentials (ADMIN_USERNAME, ADMIN_PASSWORD) not found in .env');
+            console.warn("Admin seeding skipped: ADMIN_USERNAME or ADMIN_PASSWORD is missing");
             return;
         }
 
         const existingAdmin = await User.findOne({ username: adminUsername });
-
         if (existingAdmin) {
-            console.log('✅ Admin user already exists. Updating password to match .env...');
             existingAdmin.password = adminPassword;
-            await existingAdmin.save(); // Triggers pre-save hook to hash password
-            console.log('✅ Admin password updated successfully');
+            await existingAdmin.save();
+            console.log("Admin password synced from environment");
             return;
         }
 
-        console.log('Creating new admin user...');
-        const admin = new User({
+        await User.create({
             username: adminUsername,
             password: adminPassword,
-            role: 'admin'
+            role: "admin",
         });
 
-        await admin.save();
-        console.log('✅ Admin user created successfully');
+        console.log(`Admin user created: ${adminUsername}`);
     } catch (error) {
-        console.error('❌ Error seeding admin user:', error);
+        console.error("Admin seed failed:", error);
     }
 };

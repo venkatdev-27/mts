@@ -31,6 +31,7 @@ const Contact: React.FC = () => {
   useEffect(() => {
     const loadSubjectOptions = async () => {
       const fallbackCourses = defaultUICourses.map((course) => `Course: ${course.title}`);
+      const fallbackOptions = fallbackCourses.length > 0 ? fallbackCourses : ['General Enquiry'];
       try {
         const [courseData, projectData] = await Promise.all([
           courseAPI.getAllCourses(),
@@ -49,10 +50,10 @@ const Contact: React.FC = () => {
           .map((title: string) => `Project: ${title}`);
 
         const options = [...normalizedCourses, ...normalizedProjects];
-        setSubjectOptions(options.length > 0 ? options : fallbackCourses);
+        setSubjectOptions(options.length > 0 ? options : fallbackOptions);
       } catch (error) {
         console.error('Error loading contact subject options:', error);
-        setSubjectOptions(fallbackCourses);
+        setSubjectOptions(fallbackOptions);
       }
     };
 

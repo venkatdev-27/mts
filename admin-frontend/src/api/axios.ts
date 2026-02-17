@@ -3,7 +3,11 @@ import axios from 'axios';
 const API_URL =
     import.meta.env.VITE_ADMIN_API_BASE_URL ||
     import.meta.env.VITE_API_URL ||
-    'http://localhost:5001/api';
+    '/api';
+
+if (!import.meta.env.VITE_ADMIN_API_BASE_URL && !import.meta.env.VITE_API_URL && import.meta.env.PROD) {
+    console.warn('VITE_ADMIN_API_BASE_URL/VITE_API_URL is not set. Falling back to same-origin /api.');
+}
 
 const api = axios.create({
     baseURL: API_URL,

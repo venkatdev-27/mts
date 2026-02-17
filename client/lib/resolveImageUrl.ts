@@ -1,10 +1,13 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 const getApiOrigin = () => {
   try {
     return new URL(API_BASE_URL).origin;
   } catch {
-    return 'http://localhost:5001';
+    if (typeof window !== 'undefined') {
+      return window.location.origin;
+    }
+    return '';
   }
 };
 

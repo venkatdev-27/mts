@@ -36,7 +36,9 @@ export default function Register() {
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
     const [focusedField, setFocusedField] = useState<string | null>(null);
-    const [courseOptions, setCourseOptions] = useState<string[]>(defaultUICourses.map((course) => course.title));
+    const [courseOptions, setCourseOptions] = useState<string[]>(
+        initialCourse ? [initialCourse] : defaultUICourses.map((course) => course.title)
+    );
     const [activeTestimonialIndex, setActiveTestimonialIndex] = useState(0);
 
     useEffect(() => {
@@ -54,14 +56,19 @@ export default function Register() {
                 if (Array.isArray(data) && data.length > 0) {
                     const normalized = toUICourses(data);
                     setCourseOptions(normalized.map((course) => course.title));
+                } else if (initialCourse) {
+                    setCourseOptions([initialCourse]);
+                } else {
+                    setCourseOptions(['General Course Enquiry']);
                 }
             } catch (error) {
                 console.error('Error loading courses for registration:', error);
+                setCourseOptions(initialCourse ? [initialCourse] : ['General Course Enquiry']);
             }
         };
 
         fetchCourseOptions();
-    }, []);
+    }, [initialCourse]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

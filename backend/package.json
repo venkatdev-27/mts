@@ -7,10 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/server.js",
     "dev": "nodemon --exec ts-node server.ts",
-    "build": "tsc",
-    "seed": "ts-node scripts/seedProjects.ts",
-    "seed:courses": "ts-node scripts/seedCourses.ts",
-    "seed:all": "npm run seed && npm run seed:courses"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +21,8 @@
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.5"
   },

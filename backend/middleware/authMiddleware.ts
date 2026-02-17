@@ -8,15 +8,21 @@ interface AuthRequest extends Request {
 
 export const protect = async (req: AuthRequest, res: Response, next: NextFunction) => {
     let token;
+    const jwtSecret = process.env.JWT_SECRET;
 
     if (
         req.headers.authorization &&
         req.headers.authorization.startsWith('Bearer')
     ) {
         try {
+            if (!jwtSecret) {
+                res.status(500).json({ message: 'Server auth configuration error' });
+                return;
+            }
+
             token = req.headers.authorization.split(' ')[1];
 
-            const decoded: any = jwt.verify(token, process.env.JWT_SECRET || 'secret123');
+            const decoded: any = jwt.verify(token, jwtSecret);
 
             const user = await User.findById(decoded.id).select('-password');
             if (!user) {

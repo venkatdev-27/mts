@@ -3,7 +3,12 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
 const generateToken = (id: string) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET || 'secret123', {
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+        throw new Error('JWT_SECRET is not configured');
+    }
+
+    return jwt.sign({ id }, jwtSecret, {
         expiresIn: '30d',
     });
 };
