@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api/axios';
-import { Search, Download, Filter } from 'lucide-react';
+import { Search } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 interface Registration {
@@ -68,17 +68,6 @@ const Registrations: React.FC = () => {
                 <div>
                     <h1 className="text-3xl font-bold text-slate-900">Registrations</h1>
                     <p className="text-slate-500 mt-1">Manage student enrollments</p>
-                </div>
-
-                <div className="flex gap-3">
-                    <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
-                        <Download className="w-4 h-4" />
-                        Export
-                    </button>
-                    <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
-                        <Filter className="w-4 h-4" />
-                        Filter
-                    </button>
                 </div>
             </div>
 

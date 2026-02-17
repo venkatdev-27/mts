@@ -37,21 +37,21 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
+        <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#1e293b,_#020617_55%)] flex items-center justify-center p-4 font-sans">
             <Toaster position="top-right" />
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden border border-slate-100">
-                <div className="p-8 text-center bg-slate-900 text-white">
+            <div className="bg-slate-950/90 backdrop-blur-md rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-800">
+                <div className="p-8 text-center bg-gradient-to-r from-slate-900 to-slate-800 text-white border-b border-slate-800">
                     <h1 className="text-2xl font-bold mb-2">MTS Admin Panel</h1>
-                    <p className="text-slate-400 text-sm">Sign in to manage courses and registrations</p>
+                    <p className="text-slate-300 text-sm">Sign in to manage courses and registrations</p>
                 </div>
 
                 <div className="p-8">
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">Username</label>
+                            <label className="block text-sm font-medium text-slate-200 mb-1.5">Username</label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <User className="h-5 w-5 text-gray-400" />
+                                    <User className="h-5 w-5 text-slate-500" />
                                 </div>
                                 <input
                                     type="text"
@@ -59,17 +59,17 @@ const Login: React.FC = () => {
                                     required
                                     value={formData.username}
                                     onChange={handleChange}
-                                    className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
+                                    className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-700 text-slate-100 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all placeholder:text-slate-500"
                                     placeholder="Enter username"
                                 />
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+                            <label className="block text-sm font-medium text-slate-200 mb-1.5">Password</label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <Lock className="h-5 w-5 text-gray-400" />
+                                    <Lock className="h-5 w-5 text-slate-500" />
                                 </div>
                                 <input
                                     type="password"
@@ -77,7 +77,7 @@ const Login: React.FC = () => {
                                     required
                                     value={formData.password}
                                     onChange={handleChange}
-                                    className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
+                                    className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-700 text-slate-100 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all placeholder:text-slate-500"
                                     placeholder="Enter password"
                                 />
                             </div>
@@ -86,7 +86,7 @@ const Login: React.FC = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
+                            className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-xl shadow-lg shadow-cyan-900/40 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
                         >
                             {loading ? (
                                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
