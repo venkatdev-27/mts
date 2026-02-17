@@ -43,6 +43,17 @@ const buildFallbackOverview = (title: string) =>
   `Regular reviews, milestone checks, and project-focused execution help students gain confidence in solving real technical problems. ` +
   `By the end of the course, participants are expected to build deployable outcomes and present their work with strong technical communication.`;
 
+const normalizeSkills = (raw: unknown, fallback: string[]) => {
+  if (!Array.isArray(raw)) return fallback;
+
+  const normalized = raw
+    .flatMap((item) => String(item).split(','))
+    .map((skill) => skill.trim())
+    .filter((skill) => skill.length > 0);
+
+  return normalized.length > 0 ? normalized : fallback;
+};
+
 export const toUICourses = (apiCourses: any[]): UICourse[] => {
   return apiCourses.map((raw, index) => {
     const category = (raw?.category || 'Elite') as 'Elite' | 'Premium';
@@ -64,11 +75,11 @@ export const toUICourses = (apiCourses: any[]): UICourse[] => {
       totalHours: Number(raw?.totalHours ?? durationMonths * 60),
       placementAssistance: Boolean(raw?.placementAssistance ?? category === 'Premium'),
       summary: String(raw?.summary ?? buildFallbackSummary(title)),
-      skills: Array.isArray(raw?.skills) && raw.skills.length > 0
-        ? raw.skills
-        : Array.isArray(raw?.topSkills) && raw.topSkills.length > 0
-          ? raw.topSkills
-        : fallbackSkillsByCategory[category],
+      skills: Array.isArray(raw?.skills)
+        ? normalizeSkills(raw.skills, fallbackSkillsByCategory[category])
+        : Array.isArray(raw?.topSkills)
+          ? normalizeSkills(raw.topSkills, fallbackSkillsByCategory[category])
+          : fallbackSkillsByCategory[category],
       overviewParagraph: String(
         raw?.overviewParagraph ?? raw?.overview ?? buildFallbackOverview(title)
       ),

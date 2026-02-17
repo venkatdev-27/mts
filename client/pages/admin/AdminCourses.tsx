@@ -14,6 +14,8 @@ interface Course {
     rating: number;
     students: number;
     duration: string;
+    skills: string[];
+    overviewParagraph: string;
 }
 
 const AdminCourses: React.FC = () => {
@@ -32,7 +34,9 @@ const AdminCourses: React.FC = () => {
         author: '',
         rating: 4.5,
         students: 0,
-        duration: ''
+        duration: '',
+        skillsInput: '',
+        overviewParagraph: ''
     });
 
     const fetchCourses = async () => {
@@ -53,10 +57,25 @@ const AdminCourses: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            const { skillsInput, ...restFormData } = formData;
+            if (!skillsInput.includes(',')) {
+                alert('Top Skills must be comma separated (example: React, Node.js)');
+                return;
+            }
+
+            const payload = {
+                ...restFormData,
+                skills: skillsInput
+                    .split(',')
+                    .map((skill) => skill.trim())
+                    .filter((skill) => skill.length > 0),
+                overviewParagraph: formData.overviewParagraph.trim(),
+            };
+
             if (editingCourse) {
-                await api.put(`/courses/${editingCourse._id}`, formData);
+                await api.put(`/courses/${editingCourse._id}`, payload);
             } else {
-                await api.post('/courses', formData);
+                await api.post('/courses', payload);
             }
             fetchCourses();
             setIsModalOpen(false);
@@ -90,7 +109,9 @@ const AdminCourses: React.FC = () => {
             author: course.author,
             rating: course.rating,
             students: course.students,
-            duration: course.duration
+            duration: course.duration,
+            skillsInput: Array.isArray(course.skills) ? course.skills.join(', ') : '',
+            overviewParagraph: course.overviewParagraph || ''
         });
         setIsModalOpen(true);
     };
@@ -107,7 +128,9 @@ const AdminCourses: React.FC = () => {
             author: '',
             rating: 4.5,
             students: 0,
-            duration: ''
+            duration: '',
+            skillsInput: '',
+            overviewParagraph: ''
         });
     };
 
@@ -218,6 +241,29 @@ const AdminCourses: React.FC = () => {
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Image URL</label>
                                     <input type="text" required value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value })} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" placeholder="https://..." />
+                                </div>
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Top Skills (comma separated)</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        pattern=".*,.*"
+                                        value={formData.skillsInput}
+                                        onChange={e => setFormData({ ...formData, skillsInput: e.target.value })}
+                                        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 outline-none"
+                                        placeholder="React, Node.js, MongoDB"
+                                        title="Enter comma-separated skills (example: React, Node.js)"
+                                    />
+                                </div>
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Course Overview</label>
+                                    <textarea
+                                        rows={5}
+                                        value={formData.overviewParagraph}
+                                        onChange={e => setFormData({ ...formData, overviewParagraph: e.target.value })}
+                                        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 outline-none"
+                                        placeholder="Describe what students will learn in this course..."
+                                    />
                                 </div>
                             </div>
 

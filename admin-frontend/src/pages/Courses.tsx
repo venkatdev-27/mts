@@ -36,7 +36,7 @@ const Courses: React.FC = () => {
         rating: 4.5,
         students: 0,
         duration: '',
-        skills: [] as string[],
+        skillsInput: '',
         overviewParagraph: ''
     });
 
@@ -59,9 +59,16 @@ const Courses: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            const { skillsInput, ...restFormData } = formData;
+            if (!skillsInput.includes(',')) {
+                toast.error('Top Skills must be comma separated (example: React, Node.js)');
+                return;
+            }
+
             const payload = {
-                ...formData,
-                skills: formData.skills
+                ...restFormData,
+                skills: skillsInput
+                    .split(',')
                     .map((skill) => skill.trim())
                     .filter((skill) => skill.length > 0),
                 overviewParagraph: formData.overviewParagraph.trim(),
@@ -109,7 +116,7 @@ const Courses: React.FC = () => {
             rating: course.rating,
             students: course.students,
             duration: course.duration,
-            skills: course.skills || [],
+            skillsInput: Array.isArray(course.skills) ? course.skills.join(', ') : '',
             overviewParagraph: course.overviewParagraph || ''
         });
         setIsModalOpen(true);
@@ -128,7 +135,7 @@ const Courses: React.FC = () => {
             rating: 4.5,
             students: 0,
             duration: '',
-            skills: [],
+            skillsInput: '',
             overviewParagraph: ''
         });
     };
@@ -246,15 +253,13 @@ const Courses: React.FC = () => {
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Top Skills (comma separated)</label>
                                     <input
                                         type="text"
-                                        value={formData.skills.join(', ')}
-                                        onChange={e =>
-                                            setFormData({
-                                                ...formData,
-                                                skills: e.target.value.split(',').map((skill) => skill.trim()).filter(Boolean),
-                                            })
-                                        }
+                                        required
+                                        pattern=".*,.*"
+                                        value={formData.skillsInput}
+                                        onChange={e => setFormData({ ...formData, skillsInput: e.target.value })}
                                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
                                         placeholder="React, Node.js, MongoDB"
+                                        title="Enter comma-separated skills (example: React, Node.js)"
                                     />
                                 </div>
                                 <div className="md:col-span-2">
