@@ -58,9 +58,24 @@ const Home: React.FC = () => {
   const [isWhatsappImageError, setIsWhatsappImageError] = useState(false);
   const introVideoUrl = `${import.meta.env.BASE_URL}models/ai.mp4`;
   const whatsappLogoUrl = `${import.meta.env.BASE_URL}models/wp.png`;
-  const whatsappMessage = encodeURIComponent(
-    'Hello Maruthi Tech Solutions team, I am interested in your training programs. Please share complete details about available courses, duration, fees, upcoming batches, demo class availability, certification, and placement support.',
-  );
+  const whatsappPhone = '916309616945';
+  const whatsappMessage =
+    'Hello Maruthi Tech Solutions team, I am interested in your training programs. Please share complete details about available courses, duration, fees, upcoming batches, demo class availability, certification, and placement support.';
+  const encodedWhatsappMessage = encodeURIComponent(whatsappMessage);
+  const whatsappWebUrl = `https://api.whatsapp.com/send?phone=${whatsappPhone}&text=${encodedWhatsappMessage}`;
+
+  const openWhatsApp = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const isMobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const whatsappAppUrl = `whatsapp://send?phone=${whatsappPhone}&text=${encodedWhatsappMessage}`;
+
+    if (!isMobile) return;
+
+    event.preventDefault();
+    window.location.href = whatsappAppUrl;
+    window.setTimeout(() => {
+      window.location.href = whatsappWebUrl;
+    }, 700);
+  };
 
   const serviceHoverThemes = [
     {
@@ -465,21 +480,23 @@ const Home: React.FC = () => {
       </section>
 
       <a
-        href={`https://wa.me/6309616945?text=${whatsappMessage}`}
+        href={whatsappWebUrl}
+        onClick={openWhatsApp}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
-        className="fixed right-4 bottom-4 sm:right-6 sm:bottom-6 z-[130] w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+        className="fixed right-4 bottom-4 sm:right-6 sm:bottom-6 z-[130] w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center cursor-pointer hover:scale-105 active:scale-90 transition-transform"
       >
         {isWhatsappImageError ? (
-          <span className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-emerald-500 flex items-center justify-center drop-shadow-[0_8px_18px_rgba(34,197,94,0.45)]">
-            <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+          <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-emerald-300 flex items-center justify-center drop-shadow-[0_6px_12px_rgba(16,185,129,0.18)]">
+            <MessageCircle className="w-8 h-8 sm:w-9 sm:h-9 text-white" />
           </span>
         ) : (
           <img
             src={whatsappLogoUrl}
             alt="WhatsApp"
-            className="w-11 h-11 sm:w-12 sm:h-12 rounded-full object-cover drop-shadow-[0_8px_18px_rgba(34,197,94,0.45)]"
+            loading="lazy"
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover brightness-90 contrast-75 saturate-55 sm:brightness-95 sm:contrast-85 sm:saturate-65 drop-shadow-[0_6px_12px_rgba(16,185,129,0.18)]"
             onError={() => setIsWhatsappImageError(true)}
           />
         )}
