@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
               <img
                 src="/models/logo.png"
                 alt="Maruthi Tech Solutions"
-                className="h-12 w-auto sm:h-14 md:h-[4.25rem] object-contain"
+                className="h-[4.2rem] w-auto sm:h-[5rem] md:h-[6rem] object-contain"
               />
             </Link>
           </div>

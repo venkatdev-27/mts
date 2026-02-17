@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
               <img
                 src="/models/logo.png"
                 alt="Maruthi Tech Solutions"
-                className="h-14 sm:h-16 w-auto object-contain"
+                className="h-[4.2rem] w-auto sm:h-[5rem] md:h-[6rem] object-contain"
               />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
