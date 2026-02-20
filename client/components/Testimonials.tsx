@@ -13,7 +13,7 @@ const testimonials = [
     },
     {
         id: 2,
-        name: "Priya Sharma",
+        name: "Priya",
         role: "Data Scientist",
         content: "MTS provides real-time project experience which is missing in other institutes. The hands-on training helped me crack my interview easily.",
         rating: 5,
