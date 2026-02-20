@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api/axios';
-import { Plus, Edit2, Trash2,  X } from 'lucide-react';
+import { Plus, Edit2, Trash2, X } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 interface Course {
@@ -44,10 +44,10 @@ const Courses: React.FC = () => {
         try {
             const response = await api.get('/courses');
             setCourses(response.data);
-            setLoading(false);
         } catch (error) {
-            console.error("Error fetching courses", error);
-            toast.error("Failed to fetch courses");
+            console.error('Error fetching courses', error);
+            toast.error('Failed to fetch courses');
+        } finally {
             setLoading(false);
         }
     };
@@ -76,29 +76,29 @@ const Courses: React.FC = () => {
 
             if (editingCourse) {
                 await api.put(`/courses/${editingCourse._id}`, payload);
-                toast.success("Course updated successfully");
+                toast.success('Course updated successfully');
             } else {
                 await api.post('/courses', payload);
-                toast.success("Course created successfully");
+                toast.success('Course created successfully');
             }
             fetchCourses();
             setIsModalOpen(false);
             resetForm();
         } catch (error) {
-            console.error("Error saving course", error);
-            toast.error("Failed to save course");
+            console.error('Error saving course', error);
+            toast.error('Failed to save course');
         }
     };
 
     const handleDelete = async (id: string) => {
-        if (confirm("Are you sure you want to delete this course?")) {
+        if (confirm('Are you sure you want to delete this course?')) {
             try {
                 await api.delete(`/courses/${id}`);
-                toast.success("Course deleted");
+                toast.success('Course deleted');
                 fetchCourses();
             } catch (error) {
-                console.error("Error deleting course", error);
-                toast.error("Failed to delete course");
+                console.error('Error deleting course', error);
+                toast.error('Failed to delete course');
             }
         }
     };
@@ -150,7 +150,10 @@ const Courses: React.FC = () => {
                 </div>
 
                 <button
-                    onClick={() => { resetForm(); setIsModalOpen(true); }}
+                    onClick={() => {
+                        resetForm();
+                        setIsModalOpen(true);
+                    }}
                     className="flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg"
                 >
                     <Plus className="w-5 h-5" />
@@ -159,41 +162,51 @@ const Courses: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {courses.map((course) => (
-                    <div key={course._id} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden group">
-                        <div className="relative h-48 overflow-hidden">
-                            <img src={course.image} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-slate-800 shadow-sm">
-                                {course.category}
-                            </div>
-                        </div>
-                        <div className="p-6">
-                            <h3 className="text-lg font-bold text-slate-900 mb-2 line-clamp-2 min-h-[3.5rem]">{course.title}</h3>
-                            <div className="flex justify-between items-center mb-6">
-                                <span className="text-2xl font-bold text-slate-900">₹{course.discountedPrice?.toLocaleString()}</span>
-                                <span className="text-sm text-slate-400 line-through">₹{course.price?.toLocaleString()}</span>
-                            </div>
-
-                            <div className="flex gap-3">
-                                <button
-                                    onClick={() => handleEdit(course)}
-                                    className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition-colors"
-                                >
-                                    <Edit2 className="w-4 h-4" /> Edit
-                                </button>
-                                <button
-                                    onClick={() => handleDelete(course._id)}
-                                    className="px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors"
-                                >
-                                    <Trash2 className="w-4 h-4" />
-                                </button>
-                            </div>
-                        </div>
+                {loading ? (
+                    <div className="col-span-full bg-white rounded-2xl shadow-sm border border-slate-200 p-10 text-center">
+                        <div className="inline-block w-8 h-8 border-4 border-slate-300 border-t-teal-600 rounded-full animate-spin mb-4" />
+                        <p className="text-slate-600 font-medium">Loading courses...</p>
                     </div>
-                ))}
+                ) : courses.length === 0 ? (
+                    <div className="col-span-full bg-white rounded-2xl shadow-sm border border-slate-200 p-10 text-center">
+                        <p className="text-slate-600 font-medium">No courses found.</p>
+                    </div>
+                ) : (
+                    courses.map((course) => (
+                        <div key={course._id} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden group">
+                            <div className="relative h-48 overflow-hidden">
+                                <img src={course.image} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-slate-800 shadow-sm">
+                                    {course.category}
+                                </div>
+                            </div>
+                            <div className="p-6">
+                                <h3 className="text-lg font-bold text-slate-900 mb-2 line-clamp-2 min-h-[3.5rem]">{course.title}</h3>
+                                <div className="flex justify-between items-center mb-6">
+                                    <span className="text-2xl font-bold text-slate-900">INR {course.discountedPrice?.toLocaleString()}</span>
+                                    <span className="text-sm text-slate-400 line-through">INR {course.price?.toLocaleString()}</span>
+                                </div>
+
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={() => handleEdit(course)}
+                                        className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition-colors"
+                                    >
+                                        <Edit2 className="w-4 h-4" /> Edit
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(course._id)}
+                                        className="px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
 
-            {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
                     <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -208,30 +221,30 @@ const Courses: React.FC = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Title</label>
-                                    <input type="text" required value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" placeholder="Course Title" />
+                                    <input type="text" required value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" placeholder="Course Title" />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Author</label>
-                                    <input type="text" required value={formData.author} onChange={e => setFormData({ ...formData, author: e.target.value })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" placeholder="Instructor Name" />
+                                    <input type="text" required value={formData.author} onChange={(e) => setFormData({ ...formData, author: e.target.value })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" placeholder="Instructor Name" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">Price (₹)</label>
-                                    <input type="number" required value={formData.price} onChange={e => setFormData({ ...formData, price: Number(e.target.value) })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" />
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Price (INR)</label>
+                                    <input type="number" required value={formData.price} onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">Discounted Price (₹)</label>
-                                    <input type="number" required value={formData.discountedPrice} onChange={e => setFormData({ ...formData, discountedPrice: Number(e.target.value) })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" />
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Discounted Price (INR)</label>
+                                    <input type="number" required value={formData.discountedPrice} onChange={(e) => setFormData({ ...formData, discountedPrice: Number(e.target.value) })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Category</label>
-                                    <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value as any })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none">
+                                    <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value as any })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none">
                                         <option value="Elite">Elite</option>
                                         <option value="Premium">Premium</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Level</label>
-                                    <select value={formData.level} onChange={e => setFormData({ ...formData, level: e.target.value as any })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none">
+                                    <select value={formData.level} onChange={(e) => setFormData({ ...formData, level: e.target.value as any })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none">
                                         <option value="Beginner">Beginner</option>
                                         <option value="Intermediate">Intermediate</option>
                                         <option value="Advanced">Advanced</option>
@@ -239,15 +252,15 @@ const Courses: React.FC = () => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Duration</label>
-                                    <input type="text" required value={formData.duration} onChange={e => setFormData({ ...formData, duration: e.target.value })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" placeholder="e.g. 3 M" />
+                                    <input type="text" required value={formData.duration} onChange={(e) => setFormData({ ...formData, duration: e.target.value })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" placeholder="e.g. 3 M" />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Students Count</label>
-                                    <input type="number" required value={formData.students} onChange={e => setFormData({ ...formData, students: Number(e.target.value) })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" />
+                                    <input type="number" required value={formData.students} onChange={(e) => setFormData({ ...formData, students: Number(e.target.value) })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" />
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Image URL</label>
-                                    <input type="text" required value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" placeholder="https://..." />
+                                    <input type="text" required value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" placeholder="https://..." />
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Top Skills (comma separated)</label>
@@ -256,7 +269,7 @@ const Courses: React.FC = () => {
                                         required
                                         pattern=".*,.*"
                                         value={formData.skillsInput}
-                                        onChange={e => setFormData({ ...formData, skillsInput: e.target.value })}
+                                        onChange={(e) => setFormData({ ...formData, skillsInput: e.target.value })}
                                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
                                         placeholder="React, Node.js, MongoDB"
                                         title="Enter comma-separated skills (example: React, Node.js)"
@@ -267,7 +280,7 @@ const Courses: React.FC = () => {
                                     <textarea
                                         rows={5}
                                         value={formData.overviewParagraph}
-                                        onChange={e => setFormData({ ...formData, overviewParagraph: e.target.value })}
+                                        onChange={(e) => setFormData({ ...formData, overviewParagraph: e.target.value })}
                                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
                                         placeholder="Describe what students will learn in this course..."
                                     />
