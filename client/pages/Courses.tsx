@@ -4,44 +4,33 @@ import { Star, Users, Clock, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { courseAPI } from '../services/api';
 import { defaultUICourses, toUICourses, UICourse } from '../lib/courseHelpers';
+import { Loader } from '@/components/animate-ui/icons/loader';
+import { AnimateIcon } from '@/components/animate-ui/icons/icon';
 
 const Courses: React.FC = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<'Elite' | 'Premium'>('Elite');
     const [allCourses, setAllCourses] = useState<UICourse[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [isServerWaking, setIsServerWaking] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
-        let wakeTimer: ReturnType<typeof setTimeout> | null = null;
-        wakeTimer = setTimeout(() => setIsServerWaking(true), 3500);
-
         const fetchCourses = async () => {
             try {
                 const data = await courseAPI.getAllCourses();
                 if (Array.isArray(data) && data.length > 0) {
                     setAllCourses(toUICourses(data));
-                    setErrorMessage('');
                 } else {
                     setAllCourses(defaultUICourses);
-                    setErrorMessage('Live course data is not available right now. Showing cached catalog.');
                 }
             } catch (error) {
                 console.error('Error fetching courses:', error);
                 setAllCourses(defaultUICourses);
-                setErrorMessage('Server is waking up or currently unreachable. Showing cached catalog.');
             } finally {
                 setIsLoading(false);
-                if (wakeTimer) clearTimeout(wakeTimer);
             }
         };
 
         fetchCourses();
-
-        return () => {
-            if (wakeTimer) clearTimeout(wakeTimer);
-        };
     }, []);
 
     const filteredCourses = allCourses.filter(course => course.category === activeTab);
@@ -60,14 +49,11 @@ const Courses: React.FC = () => {
                     </p>
                 </div>
 
-                {(isLoading || errorMessage) && (
-                    <div className={`mb-8 rounded-xl border px-4 py-3 text-sm ${errorMessage ? 'border-amber-200 bg-amber-50 text-amber-800' : 'border-sky-200 bg-sky-50 text-sky-800'}`}>
-                        <div className="flex items-center gap-2">
-                            <div className="h-2.5 w-2.5 animate-pulse rounded-full bg-current" />
-                            <span className="font-semibold">
-                                {errorMessage || (isServerWaking ? 'Server is waking up. This can take a minute on free tier.' : 'Loading latest courses...')}
-                            </span>
-                        </div>
+                {isLoading && (
+                    <div className="mb-8 flex items-center justify-center rounded-xl border border-slate-200 bg-white py-10">
+                        <AnimateIcon animateOnHover animation="spin" animate>
+                            <Loader className="text-slate-700" size={34} />
+                        </AnimateIcon>
                     </div>
                 )}
 
@@ -89,17 +75,7 @@ const Courses: React.FC = () => {
 
                 {/* Courses Grid (No Sidebar) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {isLoading ? (
-                        Array.from({ length: 6 }).map((_, index) => (
-                            <div key={`course-skeleton-${index}`} className="rounded-2xl border border-slate-200 bg-white p-4">
-                                <div className="h-48 rounded-xl bg-slate-200 animate-pulse" />
-                                <div className="mt-4 h-5 w-3/4 rounded bg-slate-200 animate-pulse" />
-                                <div className="mt-3 h-4 w-full rounded bg-slate-100 animate-pulse" />
-                                <div className="mt-2 h-4 w-5/6 rounded bg-slate-100 animate-pulse" />
-                                <div className="mt-6 h-10 w-full rounded-lg bg-slate-200 animate-pulse" />
-                            </div>
-                        ))
-                    ) : filteredCourses.map((course) => (
+                    {isLoading ? null : filteredCourses.map((course) => (
                         <div
                             key={course.id}
                             onClick={() => navigate(`/courses/${course.id}`)}

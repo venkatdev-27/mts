@@ -85,28 +85,28 @@ const ProjectDetails: React.FC = () => {
                             alt={project.title}
                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                            <div className="flex items-center gap-2 mb-3">
-                                <span className="inline-flex items-center px-3 py-1 bg-white/90 text-slate-800 rounded-md text-sm font-bold">
+                    </div>
+
+                    <div className="p-6 md:p-8">
+                        <div className="mb-8">
+                            <div className="flex flex-wrap items-center gap-2 mb-3">
+                                <span className="inline-flex items-center px-3 py-1 bg-amber-50 text-amber-700 rounded-md text-sm font-bold border border-amber-100">
                                     <Star className="w-4 h-4 mr-1 text-yellow-500 fill-yellow-500" />
                                     {meta.rating} Rating
                                 </span>
-                                <span className="inline-flex items-center px-3 py-1 bg-white/90 text-slate-800 rounded-md text-sm font-bold">
+                                <span className="inline-flex items-center px-3 py-1 bg-slate-100 text-slate-800 rounded-md text-sm font-bold border border-slate-200">
                                     <Clock3 className="w-4 h-4 mr-1 text-primary-600" />
                                     {meta.durationLabel}
                                 </span>
                             </div>
-                            <span className="inline-block px-3 py-1 bg-white/90 text-primary-700 rounded-md text-sm font-bold mb-3">
+                            <span className="inline-block px-3 py-1 bg-primary-50 text-primary-700 rounded-md text-sm font-bold border border-primary-100 mb-3">
                                 {project.category}
                             </span>
-                            <h1 className="text-3xl md:text-4xl font-extrabold text-white">
+                            <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900">
                                 {project.title}
                             </h1>
                         </div>
-                    </div>
 
-                    <div className="p-6 md:p-8">
                         {/* Description */}
                         <div className="mb-8">
                             <h2 className="text-2xl font-bold text-slate-900 mb-4">Project Description</h2>

@@ -3,18 +3,16 @@ import { ProjectCard } from '../components/ProjectCard';
 import { ProjectCategory, Project } from '../types';
 import { Filter, Search } from 'lucide-react';
 import { projectAPI } from '../services/api';
+import { Loader } from '@/components/animate-ui/icons/loader';
+import { AnimateIcon } from '@/components/animate-ui/icons/icon';
 
 const Projects: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isServerWaking, setIsServerWaking] = useState(false);
 
   useEffect(() => {
-    let wakeTimer: ReturnType<typeof setTimeout> | null = null;
-    wakeTimer = setTimeout(() => setIsServerWaking(true), 3500);
-
     const fetchProjects = async () => {
       try {
         setIsLoading(true);
@@ -26,15 +24,10 @@ const Projects: React.FC = () => {
         console.error('Error fetching projects:', err);
       } finally {
         setIsLoading(false);
-        if (wakeTimer) clearTimeout(wakeTimer);
       }
     };
 
     fetchProjects();
-
-    return () => {
-      if (wakeTimer) clearTimeout(wakeTimer);
-    };
   }, [selectedCategory]);
 
   const categories = ['All', ...Object.values(ProjectCategory)];
@@ -49,39 +42,18 @@ const Projects: React.FC = () => {
           </p>
         </div>
 
-        {isLoading ? (
+        {isLoading || error ? (
           <div className="py-14">
-            <div className="mb-8 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">
-              <div className="flex items-center gap-2">
-                <div className="h-2.5 w-2.5 animate-pulse rounded-full bg-current" />
-                <span className="font-semibold">
-                  {isServerWaking ? 'Server is waking up. This can take a minute on free tier.' : 'Loading latest projects...'}
-                </span>
-              </div>
+            <div className="mb-8 flex items-center justify-center rounded-xl border border-slate-200 bg-white py-10">
+              <AnimateIcon animateOnHover animation="spin" animate>
+                <Loader className="text-slate-700" size={34} />
+              </AnimateIcon>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {Array.from({ length: 6 }).map((_, index) => (
-                <div key={`project-skeleton-${index}`} className="rounded-2xl border border-slate-200 bg-white p-4">
-                  <div className="h-48 rounded-xl bg-slate-200 animate-pulse" />
-                  <div className="mt-4 h-5 w-2/3 rounded bg-slate-200 animate-pulse" />
-                  <div className="mt-3 h-4 w-full rounded bg-slate-100 animate-pulse" />
-                  <div className="mt-2 h-4 w-5/6 rounded bg-slate-100 animate-pulse" />
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : error ? (
-          <div className="text-center py-24 bg-white rounded-2xl border border-red-200">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-4 text-red-500">
-              <Search className="w-8 h-8" />
-            </div>
-            <h3 className="text-lg font-bold text-slate-900">{error}</h3>
-            <p className="mt-2 text-slate-500">Please try again later.</p>
           </div>
         ) : (
           <>
             {/* Filter Section */}
-            <div className="mb-10 overflow-x-auto pb-4 scrollbar-hide">
+            <div className="mb-10 overflow-x-auto pb-4 hide-scrollbar-mobile">
               <div className="flex space-x-2 md:justify-center px-1 min-w-max">
                 {categories.map((cat) => (
                   <button
