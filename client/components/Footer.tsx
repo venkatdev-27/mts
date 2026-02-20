@@ -54,7 +54,7 @@ const Footer: React.FC = () => {
                 <Link to="/courses" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">React Frontend Mastery</Link>
               </li>
               <li>
-                <Link to="/courses" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">Java Backend Development</Link>
+                <Link to="/courses" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">nodejs Backend Development</Link>
               </li>
               <li>
                 <Link to="/courses" className="text-slate-400 hover:text-primary-400 text-sm transition-colors">Mobile App Development</Link>
