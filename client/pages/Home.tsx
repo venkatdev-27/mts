@@ -56,6 +56,8 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
   const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
   const [homeCourses, setHomeCourses] = useState<UICourse[]>(defaultUICourses);
+  const [isHomeDataLoading, setIsHomeDataLoading] = useState(true);
+  const [isServerWaking, setIsServerWaking] = useState(false);
   const [serviceHoverThemeById, setServiceHoverThemeById] = useState<Record<string, number>>({});
   const [showIntroVideo, setShowIntroVideo] = useState<boolean>(true);
   const [isWhatsappImageError, setIsWhatsappImageError] = useState(false);
@@ -137,17 +139,22 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchFeaturedProjects = async () => {
-      try {
-        const data = await projectAPI.getAllProjects();
-        const allProjects = Array.isArray(data) ? data : (data?.projects || []);
+    let wakeTimer: ReturnType<typeof setTimeout> | null = null;
+    wakeTimer = setTimeout(() => setIsServerWaking(true), 3500);
 
+    const loadHomeData = async () => {
+      try {
+        const [projectsData, coursesData] = await Promise.all([
+          projectAPI.getAllProjects(),
+          courseAPI.getAllCourses(),
+        ]);
+
+        const allProjects = Array.isArray(projectsData) ? projectsData : (projectsData?.projects || []);
         if (allProjects.length > 0) {
           const categories = ['Full Stack', 'App Development', 'Web Development', 'AI & Machine Learning'];
           const selectedProjects: Project[] = [];
           const seenIds = new Set<string>();
 
-          // Priority 1: Pick one unique project from each main category
           categories.forEach((cat) => {
             const proj = allProjects.find((p: Project) => p.category === cat && !seenIds.has(p.id));
             if (proj) {
@@ -156,7 +163,6 @@ const Home: React.FC = () => {
             }
           });
 
-          // Priority 2: Fill the rest up to 5 projects
           for (const proj of allProjects) {
             if (selectedProjects.length >= 5) break;
             if (!seenIds.has(proj.id)) {
@@ -167,24 +173,23 @@ const Home: React.FC = () => {
 
           setFeaturedProjects(selectedProjects);
         }
-      } catch (error) {
-        console.error('Error loading home projects:', error);
-      }
-    };
 
-    fetchFeaturedProjects();
-    const fetchCourses = async () => {
-      try {
-        const data = await courseAPI.getAllCourses();
-        if (Array.isArray(data) && data.length > 0) {
-          setHomeCourses(toUICourses(data));
+        if (Array.isArray(coursesData) && coursesData.length > 0) {
+          setHomeCourses(toUICourses(coursesData));
         }
       } catch (error) {
-        console.error('Error loading home courses:', error);
+        console.error('Error loading home data:', error);
+      } finally {
+        setIsHomeDataLoading(false);
+        if (wakeTimer) clearTimeout(wakeTimer);
       }
     };
 
-    fetchCourses();
+    loadHomeData();
+
+    return () => {
+      if (wakeTimer) clearTimeout(wakeTimer);
+    };
   }, []);
 
   useEffect(() => {
@@ -228,6 +233,16 @@ const Home: React.FC = () => {
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-secondary-100/40 rounded-full blur-3xl"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {isHomeDataLoading && (
+            <div className="mb-8 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">
+              <div className="flex items-center gap-2">
+                <div className="h-2.5 w-2.5 animate-pulse rounded-full bg-current" />
+                <span className="font-semibold">
+                  {isServerWaking ? 'Server is waking up. This can take a minute on free tier.' : 'Loading latest content...'}
+                </span>
+              </div>
+            </div>
+          )}
           <div className="flex flex-col sm:flex-row justify-between items-end mb-12 gap-6">
             <div className="max-w-2xl w-full text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-3">
@@ -370,7 +385,17 @@ const Home: React.FC = () => {
             </Link>
           </div>
 
-          {featuredProjects.length > 0 ? (
+          {isHomeDataLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <div key={`home-project-skeleton-${index}`} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="h-48 rounded-xl bg-slate-200 animate-pulse" />
+                  <div className="mt-4 h-5 w-2/3 rounded bg-slate-200 animate-pulse" />
+                  <div className="mt-3 h-4 w-full rounded bg-slate-100 animate-pulse" />
+                </div>
+              ))}
+            </div>
+          ) : featuredProjects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {featuredProjects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
