@@ -9,22 +9,32 @@ const Projects: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isServerWaking, setIsServerWaking] = useState(false);
 
   useEffect(() => {
+    let wakeTimer: ReturnType<typeof setTimeout> | null = null;
+    wakeTimer = setTimeout(() => setIsServerWaking(true), 3500);
+
     const fetchProjects = async () => {
       try {
         setIsLoading(true);
+        setError(null);
         const data = await projectAPI.getAllProjects(selectedCategory);
         setProjects(data);
       } catch (err) {
-        setError('Failed to load projects');
+        setError('Server is waking up or unreachable. Please wait and try again.');
         console.error('Error fetching projects:', err);
       } finally {
         setIsLoading(false);
+        if (wakeTimer) clearTimeout(wakeTimer);
       }
     };
 
     fetchProjects();
+
+    return () => {
+      if (wakeTimer) clearTimeout(wakeTimer);
+    };
   }, [selectedCategory]);
 
   const categories = ['All', ...Object.values(ProjectCategory)];
@@ -40,10 +50,24 @@ const Projects: React.FC = () => {
         </div>
 
         {isLoading ? (
-          <div className="flex justify-center items-center py-24">
-            <div className="text-center">
-              <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-primary-600 border-r-transparent"></div>
-              <p className="mt-4 text-slate-600">Loading projects...</p>
+          <div className="py-14">
+            <div className="mb-8 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">
+              <div className="flex items-center gap-2">
+                <div className="h-2.5 w-2.5 animate-pulse rounded-full bg-current" />
+                <span className="font-semibold">
+                  {isServerWaking ? 'Server is waking up. This can take a minute on free tier.' : 'Loading latest projects...'}
+                </span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div key={`project-skeleton-${index}`} className="rounded-2xl border border-slate-200 bg-white p-4">
+                  <div className="h-48 rounded-xl bg-slate-200 animate-pulse" />
+                  <div className="mt-4 h-5 w-2/3 rounded bg-slate-200 animate-pulse" />
+                  <div className="mt-3 h-4 w-full rounded bg-slate-100 animate-pulse" />
+                  <div className="mt-2 h-4 w-5/6 rounded bg-slate-100 animate-pulse" />
+                </div>
+              ))}
             </div>
           </div>
         ) : error ? (
