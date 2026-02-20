@@ -9,7 +9,7 @@ const testimonials = [
         role: "Full Stack Developer",
         content: "The AI course was a game changer. The mentors explained complex concepts in such a simple way. I landed a job at a top MNC within 2 months of completion!",
         rating: 5,
-        image: "https://randomuser.me/api/portraits/men/32.jpg"
+        image: "https://png.pngtree.com/png-clipart/20240816/original/pngtree-cheerful-indian-student-smiling-and-pointing-side-ward-with-png-image_15786841.png"
     },
     {
         id: 2,
@@ -17,15 +17,15 @@ const testimonials = [
         role: "Data Scientist",
         content: "MTS provides real-time project experience which is missing in other institutes. The hands-on training helped me crack my interview easily.",
         rating: 5,
-        image: "https://randomuser.me/api/portraits/women/44.jpg"
+        image: "https://images.pexels.com/photos/31868218/pexels-photo-31868218.jpeg?cs=srgb&dl=pexels-prachi-rakesh-phadtare-2151819036-31868218.jpg&fm=jpg"
     },
     {
         id: 3,
-        name: "Arun Bose",
+        name: "Siva KUmar",
         role: "Student",
         content: "I was struggling with my final year project. The team at MTS not only helped me complete it but also taught me how to present it. Highly recommended!",
         rating: 5,
-        image: "https://randomuser.me/api/portraits/men/86.jpg"
+        image: "https://i.pinimg.com/736x/5a/ab/f8/5aabf84d67477f77d3bb8f0fe4cfcd17.jpg"
     },
     {
         id: 4,
@@ -33,7 +33,7 @@ const testimonials = [
         role: "Software Engineer",
         content: "Best place to learn React and Node.js. The syllabus is updated with current industry trends. The support team is always available to clear doubts.",
         rating: 4,
-        image: "https://randomuser.me/api/portraits/women/68.jpg"
+        image: "https://www.globalindian.com/youth//wp-content/uploads/2022/05/Sneha-Shahi-min.jpg"
     },
     {
         id: 5,
@@ -41,7 +41,7 @@ const testimonials = [
         role: "Cloud Engineer",
         content: "The devops training was practical and to the point. I learned Docker and Kubernetes which are essential for my career growth.",
         rating: 5,
-        image: "https://randomuser.me/api/portraits/men/11.jpg"
+        image: "https://st4.depositphotos.com/13187390/27263/i/450/depositphotos_272633644-stock-photo-indian-collage-student-bag.jpg"
     },
     {
         id: 6,
@@ -49,7 +49,7 @@ const testimonials = [
         role: "UI/UX Designer",
         content: "The design principles taught here are top-notch. I built a strong portfolio that impressed my recruiters. Thank you MTS!",
         rating: 5,
-        image: "https://randomuser.me/api/portraits/women/33.jpg"
+        image: "https://news.northeastern.edu/wp-content/uploads/2025/09/Anjali-New-Headshot_1400.jpg?w=287&h=287&crop=1"
     },
     {
         id: 7,
@@ -57,15 +57,15 @@ const testimonials = [
         role: "Python Developer",
         content: "From zero coding knowledge to a Python developer. The journey was amazing. The mentors are very patient and knowledgeable.",
         rating: 5,
-        image: "https://randomuser.me/api/portraits/men/45.jpg"
+        image: "https://static.vecteezy.com/system/resources/thumbnails/006/859/348/small/young-boy-indian-student-portrait-photo.jpg"
     },
     {
         id: 8,
-        name: "Meera Nair",
+        name: "Meera Shaik",
         role: "Web Developer",
         content: "Excellent infrastructure and supportive faculties. The placement assistance is genuine and they help you until you get placed.",
         rating: 4,
-        image: "https://randomuser.me/api/portraits/women/12.jpg"
+        image: "https://thumbs.dreamstime.com/b/portrait-good-looking-happy-young-teenager-muslim-islamic-asian-university-girl-muslim-girl-student-portrait-159184226.jpg"
     }
 ];
 

@@ -7,33 +7,24 @@
   <link rel="icon" type="image/png" href="/models/logo.png" />
   <title>Maruthi Tech Solutions</title>
 
-  <!-- ✅ Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" />
+  </noscript>
 
-  <!-- ✅ Import Map -->
-  <script type="importmap">
-  {
-    "imports": {
-      "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-      "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
-      "react/": "https://esm.sh/react@^19.2.4/",
-      "react": "https://esm.sh/react@^19.2.4",
-      "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0"
-    }
-  }
-  </script>
-
-  <!-- ✅ Tailwind CSS -->
-  <link rel="stylesheet" href="/index.css">
+  <link rel="preload" as="image" href="/models/edu.png" fetchpriority="high" />
 </head>
 
 <body class="bg-slate-50 text-slate-900 font-poppins antialiased selection:bg-primary-200 selection:text-primary-900">
-
   <div id="root"></div>
-
   <script type="module" src="/index.tsx"></script>
-
 </body>
+
 </html>

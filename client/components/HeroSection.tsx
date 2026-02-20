@@ -17,8 +17,9 @@ export function AnimatedBadgeDemo() {
 }
 
 function Hero() {
-
-  const educationCapUrl = `${import.meta.env.BASE_URL}models/edu.png`;
+  const educationCapPngUrl = `${import.meta.env.BASE_URL}models/edu.png`;
+  const educationCapWebpUrl = `${import.meta.env.BASE_URL}models/edu.webp`;
+  const educationCapAvifUrl = `${import.meta.env.BASE_URL}models/edu.avif`;
 
   const fadeIn: Variants = {
     hidden: { opacity: 0, y: 20 },
@@ -60,11 +61,20 @@ function Hero() {
           {/* Heading */}
           <motion.h1 variants={fadeIn} className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight text-white/90">
             <span className="relative inline-block">
-              <img
-                src={educationCapUrl}
-                alt="Education cap"
-                className="absolute -left-6 -top-4 md:-left-8 md:-top-6 w-12 h-12 md:w-16 md:h-16 object-contain pointer-events-none select-none z-0"
-              />
+              <picture className="absolute -left-6 -top-4 md:-left-8 md:-top-6 pointer-events-none select-none z-0">
+                <source srcSet={educationCapAvifUrl} type="image/avif" />
+                <source srcSet={educationCapWebpUrl} type="image/webp" />
+                <img
+                  src={educationCapPngUrl}
+                  alt="Education cap"
+                  width={64}
+                  height={64}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  className="w-12 h-12 md:w-16 md:h-16 object-contain"
+                />
+              </picture>
               <span className="relative z-10">Build</span>
             </span>{' '}
             Real Skills. <br className="hidden md:block" />
